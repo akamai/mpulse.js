@@ -133,9 +133,16 @@
             console.log("Config.json response: " + e.responseText);
             
             try {
-                configJson = JSON.parse(e.responseText);
+                var newConfigJson = JSON.parse(e.responseText);
+                
+                // merge in updates
+                for (var key in newConfigJson) {
+                    if (newConfigJson.hasOwnProperty(key)) {
+                        configJson[key] = newConfigJson[key];
+                    }
+                }
             } catch (e) {
-                configJson = false;
+                return;
             }
             
             if (configJson.PageParams) {
@@ -326,7 +333,7 @@
         var forceSSL = false;
         
         // config.js data
-        var configJson = false;
+        var configJson = {};
         var configJsonRefresh = false;
         var initialized = false;
         
