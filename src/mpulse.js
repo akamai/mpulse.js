@@ -273,6 +273,10 @@
             setImm(processQueue);
         }
         
+        function currentSessionId() {
+            return overriddenSessionId ? overriddenSessionId : configJson["session_id"];
+        }
+        
         function sendBeacon(params) {
             // TODO: do we expect consumers to send this?
             sessionLength++;
@@ -282,7 +286,7 @@
             params["h.d"] = configJson["h.d"];
             params["h.cr"] = configJson["h.cr"];
             params["h.t"] = configJson["h.t"];
-            params["rt.si"] = overriddenSessionId ? overriddenSessionId : configJson["session_id"];
+            params["rt.si"] = currentSessionId();
             params["rt.ss"] = sessionStart;
             params["rt.sl"] = sessionLength;
             params["http.initiator"] = "api";
@@ -420,6 +424,9 @@
             },
             setSessionID: function(id) {
                 overriddenSessionId = id;
+            },
+            getSessionID: function() {
+                return currentSessionId();
             }
         }
         
@@ -512,6 +519,11 @@
         setSessionID: function(id) {
             if (defaultApp !== false) {
                 defaultApp.setSessionID(id);
+            }
+        },
+        getSessionID: function() {
+            if (defaultApp !== false) {
+                return defaultApp.getSessionID();
             }
         }
     }
