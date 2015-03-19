@@ -411,13 +411,13 @@
             setViewGroup: function(name) {
                 group = name;
             },
-            clearViewGroup: function() {
+            resetViewGroup: function() {
                 group = false;
             },
             setDimension: function(name, value) {
                 dimensions[name] = value;
             },
-            clearDimension: function(name) {
+            resetDimension: function(name) {
                 if (typeof dimensions[name] !== undefined) {
                     delete dimensions[name];
                 }
@@ -501,9 +501,9 @@
                 defaultApp.setViewGroup(name);
             }
         },
-        clearViewGroup: function() {
+        resetViewGroup: function() {
             if (defaultApp !== false) {
-                defaultApp.clearViewGroup();
+                defaultApp.resetViewGroup();
             }
         },
         setDimension: function(name, value) {
@@ -511,9 +511,9 @@
                 defaultApp.setDimension(name, value);
             }
         },
-        clearDimension: function(name) {
+        resetDimension: function(name) {
             if (defaultApp !== false) {
-                defaultApp.clearDimension(name);
+                defaultApp.resetDimension(name);
             }
         },
         setSessionID: function(id) {
