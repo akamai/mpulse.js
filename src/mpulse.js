@@ -115,12 +115,18 @@
         
         function getConfigUrl() {
             var url = configUrl;
+            
             if (url.indexOf("?") !== -1) {
                 url += "&";
             } else {
                 url += "?";
             }
-            url += "key=" + apiKey
+            
+            // add API key
+            url += "key=" + apiKey;
+            
+            // request ACAO header
+            url += "&acao=";
             
             return ensureUrlPrefix(url);
         }
