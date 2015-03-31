@@ -6,6 +6,8 @@
     //
     var REFRESH_CRUMB_INTERVAL = 5 * 1000 * 60;
     
+    var MPULSE_VERSION = "0.0.1";
+    
     function fetchUrl(url, cb) {
         var xhr = new xhrFn();
         xhr.onreadystatechange = function() {
@@ -461,6 +463,7 @@
     // Exports
     //
     var mPulse = {
+        version: MPULSE_VERSION,
         /**
          * Changes the value of mPulse back to its original value, returning
          * a reference to the mPulse object.
