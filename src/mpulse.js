@@ -132,7 +132,7 @@
         }
         
         function getBeaconUrl() {
-            return ensureUrlPrefix(configJson.beacon_url + "?");
+            return ensureUrlPrefix(configJson.beacon_url + "?acao=1");
         }
         
         function parseConfig(e) {
