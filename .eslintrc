@@ -1,6 +1,8 @@
 {
     "env": {
-        "browser": true
+        "browser": true,
+        "node": true,
+        "amd": true
     },
     "rules": {
         // enabled over default
@@ -38,10 +40,17 @@
         "spaced-line-comment": 1,
         "max-len": [1, 120, 4],
         "quotes": [2, "double", "avoid-escape"],
+        "no-use-before-define": [1, "nofunc"],
 
         //
         // Disabled
         //
+
+        // for consistency
+        "dot-notation": 0,
+
+        // app's functions shadow global helpers
+        "no-shadow": 0,
 
         // disabled for use of _jQuery
         "no-underscore-dangle": 0
