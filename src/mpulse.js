@@ -31,7 +31,11 @@
         "setDimension",
         "resetDimension",
         "setSessionID",
-        "getSessionID"
+        "getSessionID",
+        "startSession",
+        "incrementSessionLength",
+        "setSessionLength",
+        "getSessionLength"
     ];
 
     //
@@ -174,6 +178,18 @@
         }
     }
 
+    /**
+     * Generates a pseudo-random session ID in RFC 4122 (UDID) format
+     *
+     * @returns {string} Pseudo-random session ID
+     */
+    function generateSessionID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+        });
+    }
+
     //
     // mPulse JavaScript App
     //
@@ -228,7 +244,7 @@
         var dimensionDefs = {};
 
         // whether or not the session ID was overridden
-        var overriddenSessionId = false;
+        var sessionID = false;
 
         // metric definitions from config.json
         var metricDefs = {};
@@ -359,6 +375,11 @@
             } catch (e) {
                 initialized = false;
                 return;
+            }
+
+            // start the session if we haven't already
+            if (!sessionID) {
+                startSession(configJson["session_id"])
             }
 
             // reset definitions
@@ -525,16 +546,6 @@
         }
 
         /**
-         * Gets the current session ID, either from config.json or from
-         * the the overridden value.
-         *
-         * @returns {string} Session ID
-         */
-        function currentSessionId() {
-            return overriddenSessionId ? overriddenSessionId : configJson["session_id"];
-        }
-
-        /**
          * Sends a beacon
          *
          * @param {object} params Parameters array
@@ -548,10 +559,14 @@
             params["h.d"] = configJson["h.d"];
             params["h.cr"] = configJson["h.cr"];
             params["h.t"] = configJson["h.t"];
-            params["rt.si"] = currentSessionId();
-            params["rt.ss"] = sessionStart;
-            params["rt.sl"] = sessionLength;
             params["http.initiator"] = "api";
+
+            // only send session information if at least one length
+            if (sessionID && sessionLength > 0) {
+                params["rt.si"] = sessionID;
+                params["rt.ss"] = sessionStart;
+                params["rt.sl"] = sessionLength;
+            }
 
             // TODO
             params["api"] = 1;
@@ -689,7 +704,7 @@
          * @param {string} id Session ID
          */
         function setSessionID(id) {
-            overriddenSessionId = id;
+            sessionID = id;
         }
 
         /**
@@ -698,7 +713,50 @@
          * @returns {string} Session ID
          */
         function getSessionID() {
-            return currentSessionId();
+            return sessionID;
+        }
+
+        /**
+         * Starts a new session, changing the session ID and
+         * resetting the session length to zero.
+         *
+         * @param {string} [id] Session ID (optional)
+         *
+         * @returns {string} Session ID
+         */
+        function startSession(id) {
+            // use the specifie ID or create our own
+            setSessionID(id || generateSessionID());
+
+            // reset session length to 0
+            setSessionLength(0);
+
+            return getSessionID();
+        }
+
+        /**
+         * Increments the session length
+         */
+        function incrementSessionLength() {
+            sessionLength++;
+        }
+
+        /**
+         * Sets the session length
+         *
+         * @param {number} length Length
+         */
+        function setSessionLength(length) {
+            sessionLength = length;
+        }
+
+        /**
+         * Gets the session length
+         *
+         * @returns {number} Session Length
+         */
+        function getSessionLength() {
+            return sessionLength;
         }
 
         //
@@ -714,7 +772,11 @@
             setDimension: setDimension,
             resetDimension: resetDimension,
             setSessionID: setSessionID,
-            getSessionID: getSessionID
+            getSessionID: getSessionID,
+            startSession: startSession,
+            incrementSessionLength: incrementSessionLength,
+            setSessionLength: setSessionLength,
+            getSessionLength: getSessionLength
         };
 
         return exports;
