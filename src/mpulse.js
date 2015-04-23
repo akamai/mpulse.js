@@ -14,6 +14,9 @@
     // Refresh config.json every 5 minutes
     var REFRESH_CRUMB_INTERVAL = 5 * 1000 * 60;
 
+    // 5 seconds
+    var PROCESS_QUEUE_WAIT = 5 * 1000;
+
     // Current version
     var MPULSE_VERSION = "0.0.1";
 
@@ -211,6 +214,9 @@
 
         // beacon queue
         var beaconQueue = [];
+
+        // whether or not we're already waiting to processQueue()
+        var processQueueWaiting = false;
 
         // view group
         var group = false;
@@ -454,16 +460,26 @@
 
         /**
          * Processes the beacons queue
+         *
+         * @param {boolean} calledFromTimer Whether or not we were called from a timer
          */
-        function processQueue() {
+        function processQueue(calledFromTimer) {
             if (beaconQueue.length === 0) {
                 // no work
                 return;
             }
 
             if (!initialized) {
-                // no config.json yet, try again in 5 seconds
-                setTimeout(processQueue, 5000);
+                // only have a single timer re-triggering processQueue
+                if (!processQueueWaiting || calledFromTimer) {
+                    processQueueWaiting = true;
+
+                    // no config.json yet, try again in 5 seconds
+                    setTimeout(function() {
+                        processQueue(true);
+                    }, PROCESS_QUEUE_WAIT);
+                }
+
                 return;
             }
 
