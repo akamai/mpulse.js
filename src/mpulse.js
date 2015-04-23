@@ -17,6 +17,20 @@
     // Current version
     var MPULSE_VERSION = "0.0.1";
 
+    // App public function names
+    var APP_FUNCTIONS = [
+        "startTimer",
+        "stopTimer",
+        "sendTimer",
+        "sendMetric",
+        "setViewGroup",
+        "resetViewGroup",
+        "setDimension",
+        "resetDimension",
+        "setSessionID",
+        "getSessionID"
+    ];
+
     //
     // Members
     //
@@ -747,116 +761,11 @@
     }
 
     /**
-     * Stars a timer for the default app
-     *
-     * @param {string} name Timer name
-     *
-     * @returns {number} Timer ID
+     * NO-OP placeholder function for default app until
+     * it is initialized.
      */
-    function startTimer(name) {
-        if (defaultApp !== false) {
-            return defaultApp.startTimer(name);
-        }
-    }
-
-    /**
-     * Stops and sends a timer for the default app
-     *
-     * @param {number} id Timer ID
-     */
-    function stopTimer(id) {
-        if (defaultApp !== false) {
-            defaultApp.stopTimer(id);
-        }
-    }
-
-    /**
-     * Sends the specified timer for the default app
-     *
-     * @param {string} name Timer name
-     * @param {number} value Timer value (ms)
-     */
-    function sendTimer(name, value) {
-        if (defaultApp !== false) {
-            defaultApp.sendTimer(name, value);
-        }
-    }
-
-    /**
-     * Sends the specified metric for the default app
-     *
-     * @param {string} name Metric name
-     * @param {number} [value] Metric value (1 if not specified)
-     */
-    function sendMetric(name, value) {
-        if (defaultApp !== false) {
-            defaultApp.sendMetric(name, value);
-        }
-    }
-
-    /**
-     * Sets the View Group for the default app
-     *
-     * @param {string} name View Group name
-     */
-    function setViewGroup(name) {
-        if (defaultApp !== false) {
-            defaultApp.setViewGroup(name);
-        }
-    }
-
-    /**
-     * Resets (clears) the View Group for the default app
-     */
-    function resetViewGroup() {
-        if (defaultApp !== false) {
-            defaultApp.resetViewGroup();
-        }
-    }
-
-    /**
-     * Sets a dimension for the default app
-     *
-     * @param {string} name Dimension name
-     * @param {number} [value] Dimension value
-     */
-    function setDimension(name, value) {
-        if (defaultApp !== false) {
-            defaultApp.setDimension(name, value);
-        }
-    }
-
-    /**
-     * Resets (clears) the Dimension for the default app
-     *
-     * @param {string} name Dimension name
-     */
-    function resetDimension(name) {
-        if (defaultApp !== false) {
-            defaultApp.resetDimension(name);
-        }
-    }
-
-    /**
-     * Sets the Session ID for the default app
-     *
-     * @param {string} id Session ID
-     */
-    function setSessionID(id) {
-        if (defaultApp !== false) {
-            defaultApp.setSessionID(id);
-        }
-    }
-
-    /**
-     * Gets the Session ID for the default app
-     *
-     * @returns {string} Session ID
-     */
-    function getSessionID() {
-        if (defaultApp !== false) {
-            return defaultApp.getSessionID();
-        }
+    function nop() {
+        return;
     }
 
     //
@@ -871,18 +780,14 @@
          * a reference to the mPulse object.
          */
         noConflict: noConflict,
-        init: init,
-        startTimer: startTimer,
-        stopTimer: stopTimer,
-        sendTimer: sendTimer,
-        sendMetric: sendMetric,
-        setViewGroup: setViewGroup,
-        resetViewGroup: resetViewGroup,
-        setDimension: setDimension,
-        resetDimension: resetDimension,
-        setSessionID: setSessionID,
-        getSessionID: getSessionID
+        init: init
     };
+
+    // add a placeholder function for all public app functions until the
+    // default one is defined
+    for (var i = 0; i < APP_FUNCTIONS.length; i++) {
+        mPulse[APP_FUNCTIONS[i]] = nop;
+    }
 
     //
     // Export to the appropriate location
