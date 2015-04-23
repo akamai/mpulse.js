@@ -44,6 +44,13 @@
     // now() offset for environments w/out native support
     var nowOffset = +(new Date());
 
+    /**
+     * setImmediate() function to use for browser and NodeJS
+     *
+     * @param {function} fn Function to run
+     */
+    var setImm;
+
     //
     // Helper Functions
     //
@@ -90,32 +97,32 @@
         xhr.send();
     }
 
-    /**
-     * setImmediate() for browser and NodeJS
-     *
-     * @param {function} fn Function to run
-     */
-    function setImm(fn) {
-        if (typeof process !== "undefined" &&
-            typeof process.nextTick === "function") {
-            // NodeJS
-            process.nextTick(fn);
-        } else if (typeof window !== "undefined") {
-            // Browser, check for native support
-            if (window.setImmediate) {
-                window.setImmediate(fn);
-            } else if (window.msSetImmediate) {
-                window.msSetImmediate(fn);
-            } else if (window.webkitSetImmediate) {
-                window.webkitSetImmediate(fn);
-            } else if (window.mozSetImmediate) {
-                window.mozSetImmediate(fn);
-            } else {
-                // No native suppot, run in 10ms
+    //
+    // Cross-platform setImmediate() support
+    //
+    if (typeof process !== "undefined" &&
+        typeof process.nextTick === "function") {
+        // NodeJS
+        setImm = process.nextTick.bind(process);
+    } else if (typeof window !== "undefined") {
+        // Browser, check for native support
+        if (window.setImmediate) {
+            setImm = window.setImmediate.bind(window);
+        } else if (window.msSetImmediate) {
+            setImm = window.msSetImmediate.bind(window);
+        } else if (window.webkitSetImmediate) {
+            setImm = window.webkitSetImmediate.bind(window);
+        } else if (window.mozSetImmediate) {
+            setImm = window.mozSetImmediate.bind(window);
+        } else {
+            // No native suppot, run in 10ms
+            setImm = function(fn) {
                 setTimeout(fn, 10);
             }
-        } else {
-            // Unknown, run in 10ms
+        }
+    } else {
+        // Unknown, run in 10ms
+        setImm = function(fn) {
             setTimeout(fn, 10);
         }
     }
@@ -128,7 +135,7 @@
         if (typeof window.performance !== "undefined" &&
             typeof window.performance.now === "function") {
             // native support
-            now = window.performance.now;
+            now = window.performance.now.bind(window.performance);
         } else if (typeof window.performance !== "undefined") {
             // check for prefixed versions
             var methods = ["webkitNow", "msNow", "mozNow"];
@@ -750,6 +757,12 @@
         // set the default app if not already
         if (defaultApp === false) {
             defaultApp = app;
+        }
+
+        // copy the correct functions for this default app
+        for (var i = 0; i < APP_FUNCTIONS.length; i++) {
+            var fnName = APP_FUNCTIONS[i];
+            mPulse[fnName] = defaultApp[fnName].bind(defaultApp);
         }
 
         // save in our list of apps if named
