@@ -10,8 +10,11 @@
     //
     // Constants
     //
+
+    // Refresh config.json every 5 minutes
     var REFRESH_CRUMB_INTERVAL = 5 * 1000 * 60;
 
+    // Current version
     var MPULSE_VERSION = "0.0.1";
 
     //
@@ -175,7 +178,7 @@
         // whether or not to force SSL
         var forceSSL = false;
 
-        // config.js data
+        // config.json data
         var configJson = {};
 
         // whether or not the next config.json request should be for a refresh
@@ -194,19 +197,19 @@
         // dimensions the user has set
         var dimensions = {};
 
-        // dimension definitions from config.js
+        // dimension definitions from config.json
         var dimensionDefs = {};
 
         // whether or not the session ID was overridden
         var overriddenSessionId = false;
 
-        // metric definitions from config.js
+        // metric definitions from config.json
         var metricDefs = {};
 
         // timers
         var timers = {};
 
-        // timer definitions from config.js
+        // timer definitions from config.json
         var timerDefs = {};
 
         // current timer ID
@@ -258,7 +261,7 @@
                     url = "http:" + url;
                 }
             } else if (typeof window !== "undefined" && window.location.protocol === "file:") {
-                // NodeJS
+                // Browser
                 if (url.indexOf("http:") === -1) {
                     url = "http:" + url;
                 }
@@ -268,9 +271,9 @@
         }
 
         /**
-         * Gets the config.js URL
+         * Gets the config.json URL
          *
-         * @returns {string} config.js URL
+         * @returns {string} config.json URL
          */
         function getConfigUrl() {
             var url = configUrl;
@@ -311,7 +314,7 @@
         }
 
         /**
-         * Parses config.js data
+         * Parses config.json data
          *
          * @param {string} data XHR data
          */
@@ -374,18 +377,19 @@
             configJsonRefresh = true;
             setTimeout(fetchConfig.bind(this), REFRESH_CRUMB_INTERVAL);
 
+            // process the beacon queue
             setImm(processQueue);
         }
 
         /**
-         * Fetch the config.js
+         * Fetch the config.json
          */
         function fetchConfig() {
             var url = getConfigUrl();
 
             // if we've already fetched it once, add an empty refresh crumb parameter
             if (configJsonRefresh) {
-                // we know that the config.js URL always has at lease one param (API key)
+                // we know that the config.json URL always has at lease one param (API key)
                 url += "&r=";
             }
 
@@ -437,7 +441,7 @@
             }
 
             if (!initialized) {
-                // try again in 5 seconds
+                // no config.json yet, try again in 5 seconds
                 setTimeout(processQueue, 5000);
                 return;
             }
@@ -484,7 +488,7 @@
         }
 
         /**
-         * Gets the current session ID, either from config.js or from
+         * Gets the current session ID, either from config.json or from
          * the the overridden value.
          *
          * @returns {string} Session ID
