@@ -17,9 +17,6 @@
       "url": "http://github.com/soasta/mpulse.js/raw/master/LICENSE.txt"
     }
   ],
-  "scripts": {
-    "test": "grunt travis --verbose"
-  },
   "devDependencies": {
     "expect.js": "^0.3.1",
     "grunt": ">= 0.4.0",

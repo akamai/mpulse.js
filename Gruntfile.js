@@ -100,6 +100,5 @@ module.exports = function(grunt) {
     // Task Groups
     //
     grunt.registerTask("default", ["lint", "build"]);
-    grunt.registerTask("travis", ["lint", "test"]);
     grunt.registerTask("all", ["clean", "lint:build", "test", "build"]);
 };
