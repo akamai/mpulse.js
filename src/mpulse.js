@@ -125,13 +125,13 @@
             // No native suppot, run in 10ms
             setImm = function(fn) {
                 setTimeout(fn, 10);
-            }
+            };
         }
     } else {
         // Unknown, run in 10ms
         setImm = function(fn) {
             setTimeout(fn, 10);
-        }
+        };
     }
 
     //
@@ -184,8 +184,9 @@
      * @returns {string} Pseudo-random session ID
      */
     function generateSessionID() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0;
+            var v = c === "x" ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
     }
@@ -379,7 +380,7 @@
 
             // start the session if we haven't already
             if (!sessionID) {
-                startSession(configJson["session_id"])
+                startSession(configJson["session_id"]);
             }
 
             // reset definitions
@@ -873,7 +874,7 @@
 
     // add a placeholder function for all public app functions until the
     // default one is defined
-    for (var i = 0; i < APP_FUNCTIONS.length; i++) {
+    for (i = 0; i < APP_FUNCTIONS.length; i++) {
         mPulse[APP_FUNCTIONS[i]] = nop;
     }
 
