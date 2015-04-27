@@ -695,7 +695,7 @@
          * @param {string} name Dimension name
          */
         function resetDimension(name) {
-            if (typeof dimensions[name] !== undefined) {
+            if (typeof dimensions[name] !== "undefined") {
                 delete dimensions[name];
             }
         }
@@ -834,6 +834,12 @@
     function init(key, options) {
         options = options || {};
 
+        // if the app already exists, return it
+        if (typeof options.name !== "undefined" &&
+            typeof apps[options.name] !== "undefined") {
+            return apps[options.name];
+        }
+
         var app = createApp(key, options);
 
         // set the default app if not already
@@ -848,7 +854,7 @@
         }
 
         // save in our list of apps if named
-        if (typeof options.name !== undefined) {
+        if (typeof options.name !== "undefined") {
             apps[options.name] = app;
         }
 
