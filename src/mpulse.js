@@ -35,10 +35,12 @@
         "startSession",
         "incrementSessionLength",
         "setSessionLength",
-        "getSessionLength"
+        "getSessionLength",
+        "subscribe"
     ];
 
     var EVENTS = [
+        "before_beacon",
         "beacon"
     ];
 
@@ -55,11 +57,6 @@
 
     // now() offset for environments w/out native support
     var nowOffset = +(new Date());
-
-    var subscribers = {};
-    for (i = 0; i < EVENTS.length; i++) {
-        subscribers[EVENTS[i]] = [];
-    }
 
     /**
      * setImmediate() function to use for browser and NodeJS
@@ -274,6 +271,11 @@
 
         // session lenth
         var sessionLength = 0;
+
+        var subscribers = {};
+        for (i = 0; i < EVENTS.length; i++) {
+            subscribers[EVENTS[i]] = [];
+        }
 
         //
         // Initialization
@@ -588,6 +590,9 @@
             params["u"] = "http://" + configJson["site_domain"];
             params["t_done"] = 0;
 
+            // let others add data to the beacon
+            fireEvent("before_beacon", params);
+
             // build our parameters array
             var paramsArray = [];
             for (var name in params) {
@@ -608,6 +613,9 @@
 
             // add our parameters array
             var url = baseUrl + ((baseUrl.indexOf("?") > -1) ? "&" : "?") + paramsArray.join("&");
+
+            // notify listeners
+            fireEvent("beacon", params);
 
             // initiate the XHR
             fetchUrl(url);
@@ -782,6 +790,33 @@
             return sessionLength;
         }
 
+        /**
+         * Subscribes to an event
+         *
+         * @param {string} eventName Event name
+         * @param {function} callback Callback
+         */
+        function subscribe(eventName, callback) {
+            if (!subscribers.hasOwnProperty(eventName)) {
+                return;
+            }
+
+            subscribers[eventName].push(callback);
+        }
+
+        /**
+         * Fires an event
+         *
+         * @param {string} eventName Event name
+         * @param {object} payload Event payload
+         */
+        function fireEvent(eventName, payload) {
+            for (var i = 0; i < subscribers[eventName].length; i++) {
+                // run callback
+                subscribers[eventName][i](payload);
+            }
+        }
+
         //
         // Exports
         //
@@ -799,7 +834,11 @@
             startSession: startSession,
             incrementSessionLength: incrementSessionLength,
             setSessionLength: setSessionLength,
-            getSessionLength: getSessionLength
+            getSessionLength: getSessionLength,
+            subscribe: subscribe,
+
+            // test hooks
+            parseConfig: parseConfig
         };
 
         return exports;
@@ -901,20 +940,6 @@
         return;
     }
 
-    /**
-     * Subscribes to an event
-     *
-     * @param {string} eventName Event name
-     * @param {function} callback Callback
-     */
-    function subscribe(eventName, callback) {
-        if (!EVENTS.hasOwnProperty(eventName)) {
-            return;
-        }
-
-        subscribers[eventName].push(callback);
-    }
-
     //
     // Exports
     //
@@ -928,8 +953,7 @@
          */
         noConflict: noConflict,
         init: init,
-        getApp: getApp,
-        subscribe: subscribe
+        getApp: getApp
     };
 
     // add a placeholder function for all public app functions until the
