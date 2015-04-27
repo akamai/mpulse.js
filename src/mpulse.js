@@ -833,12 +833,12 @@
         // set the default app if not already
         if (defaultApp === false) {
             defaultApp = app;
-        }
 
-        // copy the correct functions for this default app
-        for (var i = 0; i < APP_FUNCTIONS.length; i++) {
-            var fnName = APP_FUNCTIONS[i];
-            mPulse[fnName] = defaultApp[fnName].bind(defaultApp);
+            // copy the correct functions for this default app
+            for (var i = 0; i < APP_FUNCTIONS.length; i++) {
+                var fnName = APP_FUNCTIONS[i];
+                mPulse[fnName] = defaultApp[fnName].bind(defaultApp);
+            }
         }
 
         // save in our list of apps if named
