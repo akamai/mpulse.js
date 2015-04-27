@@ -38,9 +38,14 @@
         "getSessionLength"
     ];
 
+    var EVENTS = [
+        "beacon"
+    ];
+
     //
     // Members
     //
+    var i = 0;
 
     // XHR function to use
     var xhrFn;
@@ -50,6 +55,11 @@
 
     // now() offset for environments w/out native support
     var nowOffset = +(new Date());
+
+    var subscribers = {};
+    for (i = 0; i < EVENTS.length; i++) {
+        subscribers[EVENTS[i]] = [];
+    }
 
     /**
      * setImmediate() function to use for browser and NodeJS
@@ -147,7 +157,7 @@
             // check for prefixed versions
             var methods = ["webkitNow", "msNow", "mozNow"];
 
-            for (var i = 0; i < methods.length; i++) {
+            for (i = 0; i < methods.length; i++) {
                 if (typeof window.performance[methods[i]] === "function") {
                     now = window.performance[methods[i]];
                     break;
@@ -637,6 +647,10 @@
          * @returns {number} Number of milliseconds since the timer started
          */
         function stopTimer(id) {
+            if (typeof id === "undefined") {
+                return 0;
+            }
+
             var timer = timers[id];
             var deltaMs = 0;
 
@@ -887,6 +901,20 @@
         return;
     }
 
+    /**
+     * Subscribes to an event
+     *
+     * @param {string} eventName Event name
+     * @param {function} callback Callback
+     */
+    function subscribe(eventName, callback) {
+        if (!EVENTS.hasOwnProperty(eventName)) {
+            return;
+        }
+
+        subscribers[eventName].push(callback);
+    }
+
     //
     // Exports
     //
@@ -900,7 +928,8 @@
          */
         noConflict: noConflict,
         init: init,
-        getApp: getApp
+        getApp: getApp,
+        subscribe: subscribe
     };
 
     // add a placeholder function for all public app functions until the
