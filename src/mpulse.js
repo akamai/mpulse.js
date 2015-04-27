@@ -270,7 +270,7 @@
         //
 
         // parse input options
-        if (options.configUrl) {
+        if (typeof options.configUrl !== "undefined") {
             configUrl = options.configUrl;
         }
 
@@ -434,6 +434,10 @@
          * Fetch the config.json
          */
         function fetchConfig() {
+            if (configUrl === "") {
+                return;
+            }
+
             var url = getConfigUrl();
 
             // if we've already fetched it once, add an empty refresh crumb parameter
