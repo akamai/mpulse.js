@@ -828,6 +828,8 @@
      * @returns {object} New mPulse app
      */
     function init(key, options) {
+        options = options || {};
+
         var app = createApp(key, options);
 
         // set the default app if not already
@@ -850,6 +852,17 @@
     }
 
     /**
+     * Gets the specified app.
+     *
+     * @param {string} name mPulse App name
+     *
+     * @returns {mPulseApp} mPulse App
+     */
+    function getApp(name) {
+        return apps[name];
+    }
+
+    /**
      * NO-OP placeholder function for default app until
      * it is initialized.
      */
@@ -869,7 +882,8 @@
          * a reference to the mPulse object.
          */
         noConflict: noConflict,
-        init: init
+        init: init,
+        getApp: getApp
     };
 
     // add a placeholder function for all public app functions until the
