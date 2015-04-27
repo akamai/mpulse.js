@@ -633,12 +633,19 @@
          * Stops and sends a timer
          *
          * @param {number} id Timer ID
+         *
+         * @returns {number} Number of milliseconds since the timer started
          */
         function stopTimer(id) {
             var timer = timers[id];
+            var deltaMs = 0;
+
             if (timer) {
-                sendTimer(timer.name, now() - timer.time);
+                deltaMs = now() - timer.time;
+                sendTimer(timer.name, deltaMs);
             }
+
+            return deltaMs;
         }
 
         /**
