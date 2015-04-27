@@ -551,9 +551,6 @@
          * @param {object} params Parameters array
          */
         function sendBeacon(params) {
-            // TODO: do we expect consumers to send this?
-            sessionLength++;
-
             params["d"] = configJson["site_domain"];
             params["h.key"] = configJson["h.key"];
             params["h.d"] = configJson["h.d"];
