@@ -731,6 +731,10 @@
          * @param {string} name View Group name
          */
         function setViewGroup(name) {
+            if (typeof name !== "string") {
+                return;
+            }
+
             group = name;
         }
 
