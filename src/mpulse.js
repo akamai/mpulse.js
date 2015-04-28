@@ -636,6 +636,10 @@
          * @returns {number} Timer ID
          */
         function startTimer(name) {
+            if (typeof name !== "string") {
+                return -1;
+            }
+
             // increment the latest timer ID
             latestTimerId++;
 
@@ -655,7 +659,7 @@
          * @returns {number} Number of milliseconds since the timer started
          */
         function stopTimer(id) {
-            if (typeof id === "undefined") {
+            if (typeof id !== "number") {
                 return 0;
             }
 
@@ -680,6 +684,10 @@
          * @param {number} value Timer value (ms)
          */
         function sendTimer(name, value) {
+            if (typeof name !== "string") {
+                return;
+            }
+
             if (typeof value !== "number") {
                 return;
             }
