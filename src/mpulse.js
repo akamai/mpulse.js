@@ -663,7 +663,7 @@
             var deltaMs = 0;
 
             if (timer) {
-                deltaMs = now() - timer.time;
+                deltaMs = Math.round(now() - timer.time);
                 sendTimer(timer.name, deltaMs);
             }
 
@@ -677,7 +677,11 @@
          * @param {number} value Timer value (ms)
          */
         function sendTimer(name, value) {
-            addToQueue("timer", name, value);
+            if (typeof value !== "number") {
+                return;
+            }
+
+            addToQueue("timer", name, Math.round(value));
             setImm(processQueue);
         }
 
