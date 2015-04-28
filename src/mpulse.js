@@ -659,7 +659,7 @@
          * @returns {number} Number of milliseconds since the timer started
          */
         function stopTimer(id) {
-            if (typeof id !== "number") {
+            if (typeof id !== "number" || id < 0) {
                 return 0;
             }
 
@@ -682,18 +682,23 @@
          *
          * @param {string} name Timer name
          * @param {number} value Timer value (ms)
+         *
+         * @returns {number} Number of milliseconds for the timer
          */
         function sendTimer(name, value) {
             if (typeof name !== "string") {
-                return;
+                return 0;
             }
 
-            if (typeof value !== "number") {
-                return;
+            if (typeof value !== "number" || value < 0) {
+                return 0;
             }
 
-            addToQueue("timer", name, Math.round(value));
+            value = Math.round(value);
+            addToQueue("timer", name, value);
             setImm(processQueue);
+
+            return value;
         }
 
         /**
