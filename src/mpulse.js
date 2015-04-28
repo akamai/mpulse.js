@@ -708,6 +708,10 @@
          * @param {number} [value] Metric value (1 if not specified)
          */
         function sendMetric(name, value) {
+            if (typeof name !== "string") {
+                return;
+            }
+
             addToQueue("metric", name, value || 1);
             setImm(processQueue);
         }
