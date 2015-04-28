@@ -783,6 +783,16 @@
          * @param {string} id Session ID
          */
         function setSessionID(id) {
+            if (typeof id !== "string" &&
+                typeof id !== "number") {
+                return;
+            }
+
+            // convert any numbers into string session IDs
+            if (typeof id === "number") {
+                id = "" + id;
+            }
+
             sessionID = id;
         }
 
@@ -826,6 +836,11 @@
          * @param {number} length Length
          */
         function setSessionLength(length) {
+            if (typeof length !== "number" ||
+                length < 0) {
+                return;
+            }
+
             sessionLength = length;
         }
 
