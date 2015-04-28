@@ -947,6 +947,17 @@
         return;
     }
 
+    /**
+     * Stops the specified app
+     *
+     * @param {string} name mPulse App name
+     */
+    function stop(name) {
+        if (typeof apps[name] !== "undefined") {
+            delete apps[name];
+        }
+    }
+
     //
     // Exports
     //
@@ -960,7 +971,8 @@
          */
         noConflict: noConflict,
         init: init,
-        getApp: getApp
+        getApp: getApp,
+        stop: stop
     };
 
     // add a placeholder function for all public app functions until the
