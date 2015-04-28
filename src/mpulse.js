@@ -712,7 +712,16 @@
                 return;
             }
 
-            addToQueue("metric", name, value || 1);
+            if (typeof value !== "undefined" &&
+                typeof value !== "number") {
+                return;
+            }
+
+            if (typeof value === "undefined") {
+                value = 1;
+            }
+
+            addToQueue("metric", name, value);
             setImm(processQueue);
         }
 
@@ -739,6 +748,16 @@
          * @param {number} [value] Dimension value
          */
         function setDimension(name, value) {
+            if (typeof name === "undefined") {
+                return;
+            }
+
+            if (typeof value === "undefined") {
+                // if the value isn't set, call reset dimension instead
+                resetDimension(name);
+                return;
+            }
+
             dimensions[name] = value;
         }
 
@@ -748,7 +767,8 @@
          * @param {string} name Dimension name
          */
         function resetDimension(name) {
-            if (typeof dimensions[name] !== "undefined") {
+            if (typeof name !== "undefined" &&
+                typeof dimensions[name] !== "undefined") {
                 delete dimensions[name];
             }
         }
