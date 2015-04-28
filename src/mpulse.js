@@ -665,6 +665,9 @@
             if (timer) {
                 deltaMs = Math.round(now() - timer.time);
                 sendTimer(timer.name, deltaMs);
+
+                // remove old timer
+                delete timers[id];
             }
 
             return deltaMs;
