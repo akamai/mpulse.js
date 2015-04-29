@@ -78,7 +78,8 @@
     function fetchUrl(url, callback) {
         // determine which environment we're using to create the XHR
         if (!xhrFn) {
-            if (typeof XMLHttpRequest === "function") {
+            if (typeof XMLHttpRequest === "function" ||
+                typeof XMLHttpRequest === "object") {
                 xhrFn = function() {
                     return new XMLHttpRequest();
                 };
@@ -436,7 +437,7 @@
 
             // refresh the config after 5 minutes
             configJsonRefresh = true;
-            setTimeout(fetchConfig.bind(this), REFRESH_CRUMB_INTERVAL);
+            setTimeout(fetchConfig, REFRESH_CRUMB_INTERVAL);
 
             // process the beacon queue
             setImm(processQueue);
@@ -458,7 +459,7 @@
                 url += "&r=";
             }
 
-            fetchUrl(url, parseConfig.bind(this));
+            fetchUrl(url, parseConfig);
         }
 
         /**
@@ -972,7 +973,7 @@
             // copy the correct functions for this default app
             for (var i = 0; i < APP_FUNCTIONS.length; i++) {
                 var fnName = APP_FUNCTIONS[i];
-                mPulse[fnName] = defaultApp[fnName].bind(defaultApp);
+                mPulse[fnName] = defaultApp[fnName];
             }
         }
 
