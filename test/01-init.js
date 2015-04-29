@@ -18,10 +18,10 @@ describe("mPulse.init()", function() {
     });
 
     it("Should return the same app if init() is called twice with the same name", function() {
-        var app1 = mPulse.init("abc", { name: "abc" });
+        var app1 = mPulse.init("abc", {name: "abc"});
         app1.foo = 1;
 
-        var app2 = mPulse.init("abc", { name: "abc" });
+        var app2 = mPulse.init("abc", {name: "abc"});
         assert.equal(app2.foo, 1);
     });
 
