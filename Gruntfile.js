@@ -64,8 +64,8 @@ module.exports = function(grunt) {
                 files: [
                     "test/vendor/mocha/mocha.css",
                     "test/vendor/mocha/mocha.js",
+                    "test/vendor/node-assert/assert.js",
                     "test/vendor/assertive-chai/dist/assertive-chai.js",
-                    "test/vendor/node-assert/node-assert.js",
                     "src/mpulse.js",
                     "test/*.js"
                 ]
