@@ -21,6 +21,6 @@
     ],
     "devDependencies": {
         "mocha": "~1.21.5",
-        "assertive-chai": "~1.0.0"
+        "assertive-chai": "~2.0.0"
     }
 }

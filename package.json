@@ -31,7 +31,8 @@
     "karma-mocha": "^0.1.9",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-tap-reporter": "0.0.3",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "chai": "^2.3.0"
   },
   "dependencies": {
     "xmlhttprequest": "^1.7.0"

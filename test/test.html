@@ -1,20 +1,36 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <script src="../src/mpulse.js"></script>
+        <title>mpulse.js Unit Tests</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="vendor/mocha/mocha.css" />
+
+        <!-- test framework -->
+        <script src="vendor/mocha/mocha.js"></script>
+        <script src="vendor/node-assert/assert.js"></script>
+        <script src="vendor/assertive-chai/dist/assertive-chai.js"></script>
+
+        <!-- mpulse.js -->
+        <script src="../src/mpulse.js" type="text/javascript"></script>
+
+        <!-- tests -->
+        <script>
+            mocha.setup('bdd');
+        </script>
+        <script src="00-basic.js"></script>
+        <script src="01-init.js"></script>
+        <script src="02-app.js"></script>
+        <script src="03-app-timers.js"></script>
+        <script src="04-app-metrics.js"></script>
+        <script src="05-app-viewgroups.js"></script>
+        <script src="06-app-dimensions.js"></script>
+        <script src="07-app-sessions.js"></script>
     </head>
     <body>
-        <h1>mPulse API Test</h2>
+        <div id="mocha"></div>
         <script>
-        mPulse.init("WWMEP-S65ZL-MMXA7-LRRWJ-9J9VA", {
-            configUrl: "http://localhost:8080/concerto/api/config.json"
-        });
-
-        for (var i = 0; i < 100; i++) {
-            mPulse.setDimension("Dimension 1", "farts" + Math.round(Math.random() * 10));
-            mPulse.setViewGroup("VG " +  + Math.round(Math.random() * 10))
-            mPulse.sendMetric("foo", Math.round(Math.random() * 10));
-            mPulse.sendTimer("Custom Timer 1", Math.round(Math.random() * 1000));
-        }
+            mocha.run();
         </script>
     </body>
 </html>

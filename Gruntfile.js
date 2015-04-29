@@ -48,8 +48,7 @@ module.exports = function(grunt) {
                     captureFile: "test/mocha.tap"
                 },
                 src: [
-                    "src/mpulse.js",
-                    "test/test*.js"
+                    "test/*.js"
                 ]
             }
         },
@@ -65,9 +64,10 @@ module.exports = function(grunt) {
                 files: [
                     "test/vendor/mocha/mocha.css",
                     "test/vendor/mocha/mocha.js",
-                    "test/vendor/expect/index.js",
+                    "test/vendor/assertive-chai/dist/assertive-chai.js",
+                    "test/vendor/node-assert/node-assert.js",
                     "src/mpulse.js",
-                    "test/test*.js"
+                    "test/*.js"
                 ]
             },
             console: {
