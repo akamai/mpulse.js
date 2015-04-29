@@ -1,2 +1,6 @@
 node_modules/
 test/vendor/
+test/*.tap
+test/results/
+test/coverage/
+eslint.xml
