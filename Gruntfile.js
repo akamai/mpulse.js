@@ -74,12 +74,21 @@ module.exports = function(grunt) {
                 browsers: ["PhantomJS"],
                 frameworks: ["mocha"]
             }
+        },
+        bower: {
+            install: {
+                options: {
+                    targetDir: "test/vendor"
+                }
+                // runs install
+            }
         }
     });
 
     //
     // Plugins
     //
+    grunt.loadNpmTasks("grunt-bower-task");
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-karma");
@@ -89,7 +98,7 @@ module.exports = function(grunt) {
     //
     // Tasks
     //
-    grunt.registerTask("test", ["mochaTest", "karma:console"]);
+    grunt.registerTask("test", ["bower:install", "mochaTest", "karma:console"]);
 
     grunt.registerTask("lint", ["eslint:console"]);
     grunt.registerTask("lint:build", ["eslint:build"]);
