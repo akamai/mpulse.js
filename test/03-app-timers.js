@@ -51,18 +51,18 @@ describe("mPulse app - Timers", function() {
 
     describe("stopTimer()", function() {
         it("Should return 0 if you don't specify a timer ID", function() {
-            assert.equal(app.stopTimer(), 0);
+            assert.equal(app.stopTimer(), -1);
         });
 
         it("Should return 0 if id is not a number", function() {
-            assert.equal(app.stopTimer("a"), 0);
-            assert.equal(app.stopTimer(null), 0);
-            assert.equal(app.stopTimer(undefined), 0);
-            assert.equal(app.stopTimer(true), 0);
+            assert.equal(app.stopTimer("a"), -1);
+            assert.equal(app.stopTimer(null), -1);
+            assert.equal(app.stopTimer(undefined), -1);
+            assert.equal(app.stopTimer(true), -1);
         });
 
         it("Should return 0 if you specify a wrong timer ID", function() {
-            assert.equal(app.stopTimer(-1), 0);
+            assert.equal(app.stopTimer(-1), -1);
         });
 
         it("Should return the number of milliseconds changed if you specify a correct timer ID", function(done) {
@@ -118,32 +118,32 @@ describe("mPulse app - Timers", function() {
             assert.closeTo(deltaMs, 0, 100);
 
             // second call shouldn't work
-            assert.equal(app.stopTimer(timerId), 0);
+            assert.equal(app.stopTimer(timerId), -1);
         });
     });
 
     describe("sendTimer()", function() {
         it("Should return 0 if name is missing", function() {
-            assert.equal(app.sendTimer(), 0);
+            assert.equal(app.sendTimer(), -1);
         });
 
         it("Should return 0 if name is not a string", function() {
-            assert.equal(app.sendTimer(1), 0);
-            assert.equal(app.sendTimer(null), 0);
-            assert.equal(app.sendTimer(undefined), 0);
-            assert.equal(app.sendTimer(true), 0);
+            assert.equal(app.sendTimer(1), -1);
+            assert.equal(app.sendTimer(null), -1);
+            assert.equal(app.sendTimer(undefined), -1);
+            assert.equal(app.sendTimer(true), -1);
         });
 
         it("Should return 0 if value is not a number", function() {
-            assert.equal(app.sendTimer("timer", "a"), 0);
-            assert.equal(app.sendTimer("timer", null), 0);
-            assert.equal(app.sendTimer("timer", undefined), 0);
-            assert.equal(app.sendTimer("timer", true), 0);
+            assert.equal(app.sendTimer("timer", "a"), -1);
+            assert.equal(app.sendTimer("timer", null), -1);
+            assert.equal(app.sendTimer("timer", undefined), -1);
+            assert.equal(app.sendTimer("timer", true), -1);
         });
 
         it("Should return 0 if value less than 0", function() {
-            assert.equal(app.sendTimer("timer", -1), 0);
-            assert.equal(app.sendTimer("timer", -10), 0);
+            assert.equal(app.sendTimer("timer", -1), -1);
+            assert.equal(app.sendTimer("timer", -10), -1);
         });
 
         it("Should return the value given for good inputs", function() {

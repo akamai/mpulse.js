@@ -99,14 +99,14 @@
         var xhr = xhrFn();
 
         // listen for state changes
-        xhr.onreadystatechange = function() {
-            // response is ready
-            if (xhr.readyState === 4) {
-                if (callback) {
+        if (typeof callback === "function") {
+            xhr.onreadystatechange = function() {
+                // response is ready
+                if (xhr.readyState === 4) {
                     callback(xhr.responseText);
                 }
-            }
-        };
+            };
+        }
 
         xhr.open("GET", url, true);
         xhr.send();
@@ -174,7 +174,7 @@
         }
 
         // No browser support, fall back to Date.now
-        if (Date.now) {
+        if (Date && Date.now) {
             now = function() {
                 return Date.now() - nowOffset;
             };
@@ -270,7 +270,7 @@
         // session start
         var sessionStart = now();
 
-        // session lenth
+        // session length
         var sessionLength = 0;
 
         var subscribers = {};
@@ -577,7 +577,7 @@
             params["http.initiator"] = "api";
 
             // only send session information if at least one length
-            if (sessionID && sessionLength > 0) {
+            if (sessionID !== false && sessionLength > 0) {
                 params["rt.si"] = sessionID;
                 params["rt.ss"] = sessionStart;
                 params["rt.sl"] = sessionLength;
@@ -630,7 +630,7 @@
         //
 
         /**
-         * Stars a timer
+         * Starts a timer
          *
          * @param {string} name Timer name
          *
@@ -657,11 +657,12 @@
          *
          * @param {number} id Timer ID
          *
-         * @returns {number} Number of milliseconds since the timer started
+         * @returns {number} Number of milliseconds since the timer started,
+         *  or -1 if there was an error
          */
         function stopTimer(id) {
             if (typeof id !== "number" || id < 0) {
-                return 0;
+                return -1;
             }
 
             var timer = timers[id];
@@ -673,6 +674,8 @@
 
                 // remove old timer
                 delete timers[id];
+            } else {
+                return -1;
             }
 
             return deltaMs;
@@ -684,15 +687,15 @@
          * @param {string} name Timer name
          * @param {number} value Timer value (ms)
          *
-         * @returns {number} Number of milliseconds for the timer
+         * @returns {number} Number of milliseconds for the timer, or -1 if there was an error
          */
         function sendTimer(name, value) {
             if (typeof name !== "string") {
-                return 0;
+                return -1;
             }
 
             if (typeof value !== "number" || value < 0) {
-                return 0;
+                return -1;
             }
 
             value = Math.round(value);
@@ -862,6 +865,10 @@
          */
         function subscribe(eventName, callback) {
             if (!subscribers.hasOwnProperty(eventName)) {
+                return;
+            }
+
+            if (typeof callback !== "function") {
                 return;
             }
 
