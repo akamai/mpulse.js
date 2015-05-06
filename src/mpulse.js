@@ -174,7 +174,7 @@
         }
 
         // No browser support, fall back to Date.now
-        if (Date && Date.now) {
+        if (typeof Date !== "undefined" && Date.now) {
             now = function() {
                 return Date.now() - nowOffset;
             };
