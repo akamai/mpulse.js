@@ -37,3 +37,23 @@ Here are the methods available:
 * `setSessionLength(len)` - Sets the session length to the specified value
 * `getSessionLength()` - Get the session length
 * `subscribe(event, callback)` - Subscribe to events, such as `before_beacon` or `beacon`.
+
+# Example Usage
+
+## Sending a custom timer
+
+```
+// initialize the app
+mPulse.init("abcd-efgh-ijkl-mnop-qrst");
+
+// start the timer
+var timerId = mPulse.startTimer("Timer1");
+
+// ... do your work ...
+
+// stop the timer
+mPulse.stopTimer(timerId); // sends a beacon
+
+// or, you can specify the amount of time
+mPulse.sendTimer("Timer2", 500); // in ms
+```
