@@ -52,6 +52,9 @@
     // XHR function to use
     var xhrFn;
 
+    // For the XHR function, to use onload vs onreadystatechange
+    var xhrFnOnload = false;
+
     // now() implementation
     var now = false;
 
@@ -78,7 +81,12 @@
     function fetchUrl(url, callback) {
         // determine which environment we're using to create the XHR
         if (!xhrFn) {
-            if (typeof XMLHttpRequest === "function" ||
+            if (typeof XDomainRequest === "object") {
+                xhrFnOnload = true;
+                xhrFn = function() {
+                    return new XDomainRequest();
+                };
+            } else if (typeof XMLHttpRequest === "function" ||
                 typeof XMLHttpRequest === "object") {
                 xhrFn = function() {
                     return new XMLHttpRequest();
@@ -100,12 +108,18 @@
 
         // listen for state changes
         if (typeof callback === "function") {
-            xhr.onreadystatechange = function() {
-                // response is ready
-                if (xhr.readyState === 4) {
+            if (xhrFnOnload) {
+                xhr.onload = function() {
                     callback(xhr.responseText);
-                }
-            };
+                };
+            } else {
+                xhr.onreadystatechange = function() {
+                    // response is ready
+                    if (xhr.readyState === 4) {
+                        callback(xhr.responseText);
+                    }
+                };
+            }
         }
 
         xhr.open("GET", url, true);
