@@ -27,7 +27,11 @@ Here are the methods available:
 * `sendTimer(name, value)` - Send a timer with the specified name and value (in ms)
 * `sendMetric(name, value)` - Sends the specified metric with the specified value
 * `setViewGroup(viewGroup)` - Set a View Group for all future beacons
+* `getViewGroup()` - Gets the View Group
 * `resetViewGroup()` - Resets the View Group
+* `setAB(bucket)` - Set the A/B bucket for all future beacons
+* `getAB()` - Gets the A/B bucket
+* `resetAB()` - Resets the A/B bucket
 * `setDimension(name, value)` - Sets the specified dimension for all future beacons
 * `resetDimension(name)` - Resets a dimension
 * `setSessionID(id)` - Set the Session ID
@@ -45,6 +49,10 @@ Here are the methods available:
 ```
 // initialize the app
 mPulse.init("abcd-efgh-ijkl-mnop-qrst");
+
+// set global settings
+mPulse.setViewGroup("my view group");
+mPulse.setAB("my bucket");
 
 // start the timer
 var timerId = mPulse.startTimer("Timer1");

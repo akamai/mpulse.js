@@ -110,6 +110,37 @@ describe("mPulse app - View Groups", function() {
         });
     });
 
+    describe("getViewGroup()", function() {
+        it("Should return false if no View Group is called", function() {
+            assert.equal(app.getViewGroup(), false);
+        });
+
+        it("Should return false for non-string names (number)", function() {
+            app.setViewGroup(1);
+            assert.equal(app.getViewGroup(), false);
+        });
+
+        it("Should return false for non-string names (boolean)", function() {
+            app.setViewGroup(true);
+            assert.equal(app.getViewGroup(), false);
+        });
+
+        it("Should return false for non-string names (null)", function() {
+            app.setViewGroup(null);
+            assert.equal(app.getViewGroup(), false);
+        });
+
+        it("Should return false for non-string names (undefined)", function() {
+            app.setViewGroup();
+            assert.equal(app.getViewGroup(), false);
+        });
+
+        it("Should return the group if called with a string", function() {
+            app.setViewGroup("group");
+            assert.equal(app.getViewGroup(), "group");
+        });
+    });
+
     describe("resetViewGroup()", function() {
         it("Shouldn't cause any problems if called without calling setViewGroup() first", function(done) {
             app.subscribe("beacon", function(data) {
