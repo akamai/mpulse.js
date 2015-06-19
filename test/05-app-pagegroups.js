@@ -1,7 +1,7 @@
 /*eslint-env mocha*/
 "use strict";
 
-describe("mPulse app - page groups", function() {
+describe("mPulse app - Page Groups", function() {
     var root = typeof window !== "undefined" ? window : {};
     var assert = (root.chai ? root.chai : require("chai")).assert;
     var mPulse = root.mPulse ? root.mPulse : require("../src/mpulse");
