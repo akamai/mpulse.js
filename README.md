@@ -26,12 +26,12 @@ Here are the methods available:
 * `stopTimer(id)` - Stops a timer previously started via `startTimer()`
 * `sendTimer(name, value)` - Send a timer with the specified name and value (in ms)
 * `sendMetric(name, value)` - Sends the specified metric with the specified value
-* `setViewGroup(viewGroup)` - Set a View Group for all future beacons
-* `getViewGroup()` - Gets the View Group
-* `resetViewGroup()` - Resets the View Group
-* `setAB(bucket)` - Set the A/B bucket for all future beacons
-* `getAB()` - Gets the A/B bucket
-* `resetAB()` - Resets the A/B bucket
+* `setPageGroup(pageGroup)` - Set a Page Group for all future beacons
+* `getPageGroup()` - Gets the Page Group
+* `resetPageGroup()` - Resets the Page Group
+* `setABTest(bucket)` - Set the A/B bucket for all future beacons
+* `getABTest()` - Gets the A/B bucket
+* `resetABTest()` - Resets the A/B bucket
 * `setDimension(name, value)` - Sets the specified dimension for all future beacons
 * `resetDimension(name)` - Resets a dimension
 * `setSessionID(id)` - Set the Session ID
@@ -51,8 +51,8 @@ Here are the methods available:
 mPulse.init("abcd-efgh-ijkl-mnop-qrst");
 
 // set global settings
-mPulse.setViewGroup("my view group");
-mPulse.setAB("my bucket");
+mPulse.setPageGroup("my page group");
+mPulse.setABTest("my bucket");
 
 // start the timer
 var timerId = mPulse.startTimer("Timer1");

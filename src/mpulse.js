@@ -26,12 +26,12 @@
         "stopTimer",
         "sendTimer",
         "sendMetric",
-        "setViewGroup",
-        "getViewGroup",
-        "resetViewGroup",
-        "setAB",
-        "getAB",
-        "resetAB",
+        "setPageGroup",
+        "getPageGroup",
+        "resetPageGroup",
+        "setABTest",
+        "getABTest",
+        "resetABTest",
         "setDimension",
         "resetDimension",
         "setSessionID",
@@ -261,7 +261,7 @@
         // whether or not we're already waiting to processQueue()
         var processQueueWaiting = false;
 
-        // view group
+        // page group
         var group = false;
 
         // a/b
@@ -756,11 +756,11 @@
         }
 
         /**
-         * Sets the View Group
+         * Sets the Page Group
          *
-         * @param {string} name View Group name
+         * @param {string} name Page Group name
          */
-        function setViewGroup(name) {
+        function setPageGroup(name) {
             if (typeof name !== "string") {
                 return;
             }
@@ -769,18 +769,18 @@
         }
 
         /**
-         * Gets the View Group
+         * Gets the Page Group
          *
-         * @returns {string} View Group, or false if no group was set
+         * @returns {string} Page Group, or false if no group was set
          */
-        function getViewGroup() {
+        function getPageGroup() {
             return group;
         }
 
         /**
-         * Resets (clears) the View Group
+         * Resets (clears) the Page Group
          */
-        function resetViewGroup() {
+        function resetPageGroup() {
             group = false;
         }
 
@@ -796,7 +796,7 @@
          * @returns {boolean} True if the A/B bucket was set successfully, or false if it does not
          *  satisfy the bucket naming requirements.
          */
-        function setAB(bucket) {
+        function setABTest(bucket) {
             if (typeof bucket !== "string") {
                 return false;
             }
@@ -815,14 +815,14 @@
          *
          * @returns {string} A/B bucket name, or false if no bucket was set
          */
-        function getAB() {
+        function getABTest() {
             return ab;
         }
 
         /**
          * Resets (clears) the A/B bucket name
          */
-        function resetAB() {
+        function resetABTest() {
             ab = false;
         }
 
@@ -973,12 +973,12 @@
             stopTimer: stopTimer,
             sendTimer: sendTimer,
             sendMetric: sendMetric,
-            setViewGroup: setViewGroup,
-            getViewGroup: getViewGroup,
-            resetViewGroup: resetViewGroup,
-            setAB: setAB,
-            getAB: getAB,
-            resetAB: resetAB,
+            setPageGroup: setPageGroup,
+            getPageGroup: getPageGroup,
+            resetPageGroup: resetPageGroup,
+            setABTest: setABTest,
+            getABTest: getABTest,
+            resetABTest: resetABTest,
             setDimension: setDimension,
             resetDimension: resetDimension,
             setSessionID: setSessionID,
