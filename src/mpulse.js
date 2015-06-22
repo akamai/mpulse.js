@@ -26,8 +26,12 @@
         "stopTimer",
         "sendTimer",
         "sendMetric",
-        "setViewGroup",
-        "resetViewGroup",
+        "setPageGroup",
+        "getPageGroup",
+        "resetPageGroup",
+        "setABTest",
+        "getABTest",
+        "resetABTest",
         "setDimension",
         "resetDimension",
         "setSessionID",
@@ -257,8 +261,11 @@
         // whether or not we're already waiting to processQueue()
         var processQueueWaiting = false;
 
-        // view group
+        // page group
         var group = false;
+
+        // a/b
+        var ab = false;
 
         // dimensions the user has set
         var dimensions = {};
@@ -507,6 +514,7 @@
                 name: name,
                 value: value,
                 group: group,
+                ab: ab,
                 dimensions: getCurrentDimensions()
             });
         }
@@ -549,6 +557,10 @@
             // page group
             if (typeof q.group !== "boolean") {
                 data["h.pg"] = q.group;
+            }
+
+            if (typeof q.ab !== "boolean") {
+                data["h.ab"] = q.ab;
             }
 
             // dimensions
@@ -744,11 +756,11 @@
         }
 
         /**
-         * Sets the View Group
+         * Sets the Page Group
          *
-         * @param {string} name View Group name
+         * @param {string} name Page Group name
          */
-        function setViewGroup(name) {
+        function setPageGroup(name) {
             if (typeof name !== "string") {
                 return;
             }
@@ -757,10 +769,61 @@
         }
 
         /**
-         * Resets (clears) the View Group
+         * Gets the Page Group
+         *
+         * @returns {string} Page Group, or false if no group was set
          */
-        function resetViewGroup() {
+        function getPageGroup() {
+            return group;
+        }
+
+        /**
+         * Resets (clears) the Page Group
+         */
+        function resetPageGroup() {
             group = false;
+        }
+
+        /**
+         * Sets the A/B bucket.
+         *
+         * Bucket name can only contain alphanumeric characters, dashes, underscores and spaces.
+         *
+         * Bucket name is limited to 25 characters.
+         *
+         * @param {string} bucket A/B bucket name
+         *
+         * @returns {boolean} True if the A/B bucket was set successfully, or false if it does not
+         *  satisfy the bucket naming requirements.
+         */
+        function setABTest(bucket) {
+            if (typeof bucket !== "string") {
+                return false;
+            }
+
+            if (/^[a-zA-Z0-9_ -]{1,25}$/.test(bucket) === false) {
+                return false;
+            }
+
+            ab = bucket;
+
+            return true;
+        }
+
+        /**
+         * Gets the A/B bucket
+         *
+         * @returns {string} A/B bucket name, or false if no bucket was set
+         */
+        function getABTest() {
+            return ab;
+        }
+
+        /**
+         * Resets (clears) the A/B bucket name
+         */
+        function resetABTest() {
+            ab = false;
         }
 
         /**
@@ -910,8 +973,12 @@
             stopTimer: stopTimer,
             sendTimer: sendTimer,
             sendMetric: sendMetric,
-            setViewGroup: setViewGroup,
-            resetViewGroup: resetViewGroup,
+            setPageGroup: setPageGroup,
+            getPageGroup: getPageGroup,
+            resetPageGroup: resetPageGroup,
+            setABTest: setABTest,
+            getABTest: getABTest,
+            resetABTest: resetABTest,
             setDimension: setDimension,
             resetDimension: resetDimension,
             setSessionID: setSessionID,

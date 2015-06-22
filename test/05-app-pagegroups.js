@@ -1,7 +1,7 @@
 /*eslint-env mocha*/
 "use strict";
 
-describe("mPulse app - View Groups", function() {
+describe("mPulse app - Page Groups", function() {
     var root = typeof window !== "undefined" ? window : {};
     var assert = (root.chai ? root.chai : require("chai")).assert;
     var mPulse = root.mPulse ? root.mPulse : require("../src/mpulse");
@@ -32,8 +32,8 @@ describe("mPulse app - View Groups", function() {
         app = null;
     });
 
-    describe("setViewGroup()", function() {
-        it("Should not set a view group if not called", function(done) {
+    describe("setPageGroup()", function() {
+        it("Should not set a page group if not called", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.isUndefined(data["h.pg"]);
                 done();
@@ -42,57 +42,57 @@ describe("mPulse app - View Groups", function() {
             app.sendTimer("timer", 100);
         });
 
-        it("Should not set a view group for non-string names (number)", function(done) {
+        it("Should not set a page group for non-string names (number)", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.isUndefined(data["h.pg"]);
                 done();
             });
 
-            app.setViewGroup(1);
+            app.setPageGroup(1);
             app.sendTimer("timer", 100);
         });
 
-        it("Should not set a view group for non-string names (boolean)", function(done) {
+        it("Should not set a page group for non-string names (boolean)", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.isUndefined(data["h.pg"]);
                 done();
             });
 
-            app.setViewGroup(true);
+            app.setPageGroup(true);
             app.sendTimer("timer", 100);
         });
 
-        it("Should not set a view group for non-string names (null)", function(done) {
+        it("Should not set a page group for non-string names (null)", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.isUndefined(data["h.pg"]);
                 done();
             });
 
-            app.setViewGroup(null);
+            app.setPageGroup(null);
             app.sendTimer("timer", 100);
         });
 
-        it("Should not set a view group for non-string names (undefined)", function(done) {
+        it("Should not set a page group for non-string names (undefined)", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.isUndefined(data["h.pg"]);
                 done();
             });
 
-            app.setViewGroup();
+            app.setPageGroup();
             app.sendTimer("timer", 100);
         });
 
-        it("Should set the view group for the next beacon if called", function(done) {
+        it("Should set the page group for the next beacon if called", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.equal(data["h.pg"], "group");
                 done();
             });
 
-            app.setViewGroup("group");
+            app.setPageGroup("group");
             app.sendTimer("timer", 100);
         });
 
-        it("Should set the view group for all following beacons if called", function(done) {
+        it("Should set the page group for all following beacons if called", function(done) {
             var beaconsFired = 0;
             app.subscribe("beacon", function(data) {
                 beaconsFired++;
@@ -104,32 +104,63 @@ describe("mPulse app - View Groups", function() {
                 }
             });
 
-            app.setViewGroup("group");
+            app.setPageGroup("group");
             app.sendTimer("timer", 100);
             app.sendTimer("timer", 100);
         });
     });
 
-    describe("resetViewGroup()", function() {
-        it("Shouldn't cause any problems if called without calling setViewGroup() first", function(done) {
+    describe("getPageGroup()", function() {
+        it("Should return false if no page group is called", function() {
+            assert.equal(app.getPageGroup(), false);
+        });
+
+        it("Should return false for non-string names (number)", function() {
+            app.setPageGroup(1);
+            assert.equal(app.getPageGroup(), false);
+        });
+
+        it("Should return false for non-string names (boolean)", function() {
+            app.setPageGroup(true);
+            assert.equal(app.getPageGroup(), false);
+        });
+
+        it("Should return false for non-string names (null)", function() {
+            app.setPageGroup(null);
+            assert.equal(app.getPageGroup(), false);
+        });
+
+        it("Should return false for non-string names (undefined)", function() {
+            app.setPageGroup();
+            assert.equal(app.getPageGroup(), false);
+        });
+
+        it("Should return the group if called with a string", function() {
+            app.setPageGroup("group");
+            assert.equal(app.getPageGroup(), "group");
+        });
+    });
+
+    describe("resetPageGroup()", function() {
+        it("Shouldn't cause any problems if called without calling setPageGroup() first", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.isUndefined(data["h.pg"]);
                 assert.equal(data["t_other"], "timer|100");
                 done();
             });
 
-            app.resetViewGroup();
+            app.resetPageGroup();
             app.sendTimer("timer", 100);
         });
 
-        it("Should remove the view group after being called", function(done) {
+        it("Should remove the page group after being called", function(done) {
             app.subscribe("beacon", function(data) {
                 assert.isUndefined(data["h.pg"]);
                 done();
             });
 
-            app.setViewGroup("group");
-            app.resetViewGroup();
+            app.setPageGroup("group");
+            app.resetPageGroup();
             app.sendTimer("timer", 100);
         });
     });
