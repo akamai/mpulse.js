@@ -610,7 +610,7 @@
             }
 
             // TODO
-            params["api"] = 1;
+            params["api"] = "true";
 
             // TODO remove?
             params["v"] = 1;
