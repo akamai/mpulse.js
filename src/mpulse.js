@@ -602,8 +602,7 @@
             params["h.t"] = configJson["h.t"];
             params["http.initiator"] = "api";
 
-            // only send session information if at least one length
-            if (sessionID !== false && sessionLength > 0) {
+            if (sessionID !== false) {
                 params["rt.si"] = sessionID;
                 params["rt.ss"] = sessionStart;
                 params["rt.sl"] = sessionLength;
