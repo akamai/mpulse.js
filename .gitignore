@@ -4,3 +4,4 @@ test/*.tap
 test/results/
 test/coverage/
 eslint.xml
+dist/mpulse-v*.zip

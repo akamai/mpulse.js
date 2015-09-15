@@ -20,6 +20,20 @@ module.exports = function(grunt) {
                 dest: "dist/<%= pkg.name %>.min.js"
             }
         },
+        compress: {
+            main: {
+                options: {
+                    archive: "dist/<%= pkg.name %>-v<%= pkg.version %>.zip",
+                    mode: "zip",
+                    level: 9
+                },
+                files: [
+                    {src: ["README.md"], dest: ""},
+                    {src: ["src/*.js"], filter: "isFile"},
+                    {src: ["dist/*.js*"], filter: "isFile"}
+                ]
+            }
+        },
         eslint: {
             console: {
                 src: [
@@ -90,6 +104,7 @@ module.exports = function(grunt) {
     //
     grunt.loadNpmTasks("grunt-bower-task");
     grunt.loadNpmTasks("grunt-contrib-clean");
+    grunt.loadNpmTasks("grunt-contrib-compress");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-karma");
     grunt.loadNpmTasks("grunt-mocha-test");
@@ -109,5 +124,5 @@ module.exports = function(grunt) {
     // Task Groups
     //
     grunt.registerTask("default", ["lint", "build"]);
-    grunt.registerTask("all", ["clean", "lint:build", "test", "build"]);
+    grunt.registerTask("all", ["clean", "lint:build", "test", "build", "compress:main"]);
 };
