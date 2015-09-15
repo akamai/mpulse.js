@@ -65,3 +65,11 @@ mPulse.stopTimer(timerId); // sends a beacon
 // or, you can specify the amount of time
 mPulse.sendTimer("Timer2", 500); // in ms
 ```
+
+# Version History
+
+* v0.0.1 - May 26, 2015: Initial release
+* v0.0.2 - September 10, 2015:
+    * Added support for A/B tests: `setABTest()`, `getABTest()` and `resetABTest()` functions added
+    * BREAKING Change: `setViewGroup()` was changed to `setPageGroup()`.  `resetViewGroup()` was changed to `resetPageGroup()`
+    * Added `getPageGroup()`
