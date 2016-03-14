@@ -26,7 +26,7 @@ describe("mPulse app", function() {
 
     var app = null;
     beforeEach(function() {
-        app = mPulse.init("app", {configUrl: ""});
+        app = mPulse.init("app", "secret-key", {configUrl: ""});
     });
 
     afterEach(function() {

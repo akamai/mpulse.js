@@ -1,4 +1,4 @@
 {
-    "directory": "test/vendor",
+    "directory": "lib",
     "color" : false
 }

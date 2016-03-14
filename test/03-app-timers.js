@@ -22,7 +22,7 @@ describe("mPulse app - Timers", function() {
 
     var app = null;
     beforeEach(function() {
-        app = mPulse.init("app_timers", {configUrl: ""});
+        app = mPulse.init("app_timers", "secret-key", {configUrl: ""});
 
         app.parseConfig(CONFIG_JSON_STRING);
     });

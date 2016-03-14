@@ -22,7 +22,7 @@ describe("mPulse app - Sessions", function() {
 
     var app = null;
     beforeEach(function() {
-        app = mPulse.init("app_session", {configUrl: ""});
+        app = mPulse.init("app_session", "secret-key", {configUrl: ""});
 
         app.parseConfig(CONFIG_JSON_STRING);
     });
