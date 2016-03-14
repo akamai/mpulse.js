@@ -1,12 +1,12 @@
 {
   "name": "mpulse",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "homepage": "https://github.com/soasta/mpulse.js",
   "authors": [
     "Nic Jansma <njansma@soasta.com>"
   ],
   "description": "SOASTA mPulse JavaScript API",
-  "main": "src/mpulse.js",
+  "main": "dist/mpulse.js",
   "keywords": [
     "soasta",
     "mpulse"
