@@ -22,7 +22,7 @@ describe("mPulse app - Page Groups", function() {
 
     var app = null;
     beforeEach(function() {
-        app = mPulse.init("app_vg", {configUrl: ""});
+        app = mPulse.init("app_vg", "secret-key", {configUrl: ""});
 
         app.parseConfig(CONFIG_JSON_STRING);
     });

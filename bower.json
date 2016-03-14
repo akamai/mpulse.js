@@ -1,26 +1,29 @@
 {
-    "name": "mpulse",
-    "version": "0.0.2",
-    "homepage": "https://github.com/soasta/mpulse.js",
-    "authors": [
-        "Nic Jansma <njansma@soasta.com>"
-    ],
-    "description": "SOASTA mPulse JavaScript API",
-    "main": "src/mpulse.js",
-    "keywords": [
-        "soasta",
-        "mpulse"
-    ],
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "Gruntfile.js",
-        "node_modules",
-        "bower_components",
-        "test"
-    ],
-    "devDependencies": {
-        "mocha": "~1.21.5",
-        "assertive-chai": "~2.0.0"
-    }
+  "name": "mpulse",
+  "version": "0.0.2",
+  "homepage": "https://github.com/soasta/mpulse.js",
+  "authors": [
+    "Nic Jansma <njansma@soasta.com>"
+  ],
+  "description": "SOASTA mPulse JavaScript API",
+  "main": "src/mpulse.js",
+  "keywords": [
+    "soasta",
+    "mpulse"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "Gruntfile.js",
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
+  "devDependencies": {
+    "mocha": "~1.21.5",
+    "assertive-chai": "~2.0.0"
+  },
+  "dependencies": {
+    "cryptojslib": "~3.1.2"
+  }
 }

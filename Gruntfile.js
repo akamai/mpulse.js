@@ -2,12 +2,33 @@
 module.exports = function(grunt) {
     "use strict";
 
+    var src = [
+        "lib/cryptojslib/components/core.js",
+        "lib/cryptojslib/components/sha256.js",
+        "lib/cryptojslib/components/hmac.js",
+        "src/mpulse.js"
+    ];
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
         clean: {
             options: {},
-            build: ["test/*.tap", "test/coverage"]
+            build: [
+                "dist/*",
+                "test/*.tap",
+                "test/coverage"
+            ]
+        },
+        concat: {
+            options: {
+                stripBanners: false,
+                seperator: ";"
+            },
+            release: {
+                src: src,
+                dest: "dist/<%= pkg.name %>.js"
+            }
         },
         uglify: {
             options: {
@@ -76,10 +97,10 @@ module.exports = function(grunt) {
                 },
                 basePath: "./",
                 files: [
-                    "test/vendor/mocha/mocha.css",
-                    "test/vendor/mocha/mocha.js",
-                    "test/vendor/node-assert/assert.js",
-                    "test/vendor/assertive-chai/dist/assertive-chai.js",
+                    "lib/mocha/mocha.css",
+                    "lib/mocha/mocha.js",
+                    "lib/node-assert/assert.js",
+                    "lib/assertive-chai/dist/assertive-chai.js",
                     "src/mpulse.js",
                     "test/*.js"
                 ]
@@ -92,7 +113,7 @@ module.exports = function(grunt) {
         bower: {
             install: {
                 options: {
-                    targetDir: "test/vendor"
+                    targetDir: "lib"
                 }
                 // runs install
             }
@@ -104,6 +125,7 @@ module.exports = function(grunt) {
     //
     grunt.loadNpmTasks("grunt-bower-task");
     grunt.loadNpmTasks("grunt-contrib-clean");
+    grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-compress");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-karma");
@@ -118,7 +140,7 @@ module.exports = function(grunt) {
     grunt.registerTask("lint", ["eslint:console"]);
     grunt.registerTask("lint:build", ["eslint:build"]);
 
-    grunt.registerTask("build", ["uglify"]);
+    grunt.registerTask("build", ["concat", "uglify"]);
 
     //
     // Task Groups

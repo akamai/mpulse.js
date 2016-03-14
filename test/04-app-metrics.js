@@ -22,7 +22,7 @@ describe("mPulse app - Metrics", function() {
 
     var app = null;
     beforeEach(function() {
-        app = mPulse.init("app_metrics", {configUrl: ""});
+        app = mPulse.init("app_metrics", "secret-key", {configUrl: ""});
 
         app.parseConfig(CONFIG_JSON_STRING);
     });

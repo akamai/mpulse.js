@@ -30,7 +30,7 @@ describe("mPulse app - Dimensions", function() {
 
     var app = null;
     beforeEach(function() {
-        app = mPulse.init("app_dim", {configUrl: ""});
+        app = mPulse.init("app_dim", "secret-key", {configUrl: ""});
 
         app.parseConfig(CONFIG_JSON_STRING);
     });

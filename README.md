@@ -14,9 +14,9 @@ Please include the script in your web app prior to its use:
 
 Once `mpulse.js` is loaded, there is a global `mPulse` object available on `window`.  It also registers itself as a RequireJS module.
 
-To start working with the API, you first need to configure it with your API key:
+To start working with the API, you first need to configure it with your API key and REST API Secret Key:
 
-    var mPulseApp = mPulse.init("abcd-efgh-ijkl-mnop-qrst");
+    var mPulseApp = mPulse.init("api-key", "rest-api-secret-key");
 
 Then, you can either interact with it via the object returned from `init()` or via the same methods on the core `mPulse` object.
 
@@ -48,7 +48,7 @@ Here are the methods available:
 
 ```
 // initialize the app
-mPulse.init("abcd-efgh-ijkl-mnop-qrst");
+mPulse.init("abcd-efgh-ijkl-mnop-qrst", "secret-key");
 
 // set global settings
 mPulse.setPageGroup("my page group");
