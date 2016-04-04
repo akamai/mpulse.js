@@ -204,6 +204,17 @@
     }
 
     /**
+     * Logs a console.warn (if console exists)
+     *
+     * @param {string} message Message
+     */
+    function warn(message) {
+        if (typeof console === "object" && typeof console.warn === "function") {
+            console.warn("mPulse: " + message);
+        }
+    }
+
+    /**
      * Generates a pseudo-random session ID in RFC 4122 (UDID) format
      *
      * @returns {string} Pseudo-random session ID
@@ -591,6 +602,8 @@
                 if (q.dimensions.hasOwnProperty(dimName)) {
                     if (typeof dimensionDefs[dimName] !== "undefined") {
                         data[dimensionDefs[dimName]] = q.dimensions[dimName];
+                    } else {
+                        warn("Custom Dimension '" + dimName + "' is not defined");
                     }
                 }
             }
@@ -600,11 +613,15 @@
                 if (typeof metricDefs[name] !== "undefined") {
                     data[metricDefs[name]] = val;
                     sendBeacon(data);
+                } else {
+                    warn("Custom Metric '" + name + "' is not defined");
                 }
             } else if (type === "timer") {
                 if (typeof timerDefs[name] !== "undefined") {
                     data["t_other"] = timerDefs[name] + "|" + val;
                     sendBeacon(data);
+                } else {
+                    warn("Custom Timer '" + name + "' is not defined");
                 }
             }
 
