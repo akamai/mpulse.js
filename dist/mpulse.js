@@ -2115,6 +2115,16 @@ code.google.com/p/crypto-js/wiki/License
     function init(apiKey, secretKey, options) {
         options = options || {};
 
+        if (typeof apiKey === "undefined") {
+            warn("init(): You need to specify an apiKey");
+            return;
+        }
+
+        if (typeof secretKey === "undefined") {
+            warn("init(): You need to specify a secretKey");
+            return;
+        }
+
         // if the app already exists, return it
         if (typeof options.name !== "undefined" &&
             typeof apps[options.name] !== "undefined") {
