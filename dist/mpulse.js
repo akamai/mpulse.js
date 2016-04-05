@@ -1235,6 +1235,17 @@ code.google.com/p/crypto-js/wiki/License
     }
 
     /**
+     * Logs a console.warn (if console exists)
+     *
+     * @param {string} message Message
+     */
+    function warn(message) {
+        if (typeof console === "object" && typeof console.warn === "function") {
+            console.warn("mPulse: " + message);
+        }
+    }
+
+    /**
      * Generates a pseudo-random session ID in RFC 4122 (UDID) format
      *
      * @returns {string} Pseudo-random session ID
@@ -1622,6 +1633,8 @@ code.google.com/p/crypto-js/wiki/License
                 if (q.dimensions.hasOwnProperty(dimName)) {
                     if (typeof dimensionDefs[dimName] !== "undefined") {
                         data[dimensionDefs[dimName]] = q.dimensions[dimName];
+                    } else {
+                        warn("Custom Dimension '" + dimName + "' is not defined");
                     }
                 }
             }
@@ -1631,11 +1644,15 @@ code.google.com/p/crypto-js/wiki/License
                 if (typeof metricDefs[name] !== "undefined") {
                     data[metricDefs[name]] = val;
                     sendBeacon(data);
+                } else {
+                    warn("Custom Metric '" + name + "' is not defined");
                 }
             } else if (type === "timer") {
                 if (typeof timerDefs[name] !== "undefined") {
                     data["t_other"] = timerDefs[name] + "|" + val;
                     sendBeacon(data);
+                } else {
+                    warn("Custom Timer '" + name + "' is not defined");
                 }
             }
 
@@ -2097,6 +2114,16 @@ code.google.com/p/crypto-js/wiki/License
      */
     function init(apiKey, secretKey, options) {
         options = options || {};
+
+        if (typeof apiKey === "undefined") {
+            warn("init(): You need to specify an apiKey");
+            return;
+        }
+
+        if (typeof secretKey === "undefined") {
+            warn("init(): You need to specify a secretKey");
+            return;
+        }
 
         // if the app already exists, return it
         if (typeof options.name !== "undefined" &&
