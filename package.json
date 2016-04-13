@@ -3,7 +3,7 @@
   "description": "SOASTA mPulse JavaScript API",
   "main": "./src/mpulse",
   "author": "SOASTA",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "http://github.com/soasta/mpulse.js.git"

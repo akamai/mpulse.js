@@ -12,3 +12,6 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
     * Added `getPageGroup()`
 * v1.0.0 - March 14, 2016
     * Updated to mPulse Beacon API v2
+* v1.0.1 - April 13, 2016
+    * console.warn() when using a Custom Timer, Metric or Dimension that doesn't exist
+    * console.warn() if you don't specify the REST API Secret Key on `init()`
