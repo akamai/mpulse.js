@@ -84,7 +84,8 @@
     function fetchUrl(url, callback) {
         // determine which environment we're using to create the XHR
         if (!xhrFn) {
-            if (typeof XDomainRequest === "object") {
+            if (typeof XDomainRequest === "function" ||
+                typeof XDomainRequest === "object") {
                 xhrFnOnload = true;
                 xhrFn = function() {
                     return new XDomainRequest();
