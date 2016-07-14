@@ -15,3 +15,5 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
 * v1.0.1 - April 13, 2016
     * console.warn() when using a Custom Timer, Metric or Dimension that doesn't exist
     * console.warn() if you don't specify the REST API Secret Key on `init()`
+* v1.0.2 - July 11, 2016
+    * Fix for IE 9 / `XDomainRequest`
