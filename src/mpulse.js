@@ -240,6 +240,7 @@
     function signConfig(apiKey, secretKey, t) {
         if (typeof CryptoJS === "undefined" ||
             typeof CryptoJS.HmacSHA256 !== "function") {
+            warn("CryptoJS libraries not found!  mpulse.js will not work.");
             return "";
         }
 
