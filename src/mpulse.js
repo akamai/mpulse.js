@@ -39,6 +39,9 @@
         "incrementSessionLength",
         "setSessionLength",
         "getSessionLength",
+        "setSessionStart",
+        "getSessionStart",
+        "transferBoomerangSession",
         "subscribe"
     ];
 
@@ -182,15 +185,16 @@
         }
     }
 
-    if (!now) {
-        // NavigationTiming support for a more accurate offset
-        if (typeof window !== "undefined" &&
-            window.performance &&
-            window.performance.timing &&
-            window.performance.timing.navigationStart) {
-            nowOffset = window.performance.timing.navigationStart;
-        }
+    // NavigationTiming support for a more accurate offset
+    if (typeof window !== "undefined" &&
+        "performance" in window &&
+        window.performance &&
+        window.performance.timing &&
+        window.performance.timing.navigationStart) {
+        nowOffset = window.performance.timing.navigationStart;
+    }
 
+    if (!now) {
         // No browser support, fall back to Date.now
         if (typeof Date !== "undefined" && Date.now) {
             now = function() {
@@ -216,7 +220,7 @@
     }
 
     /**
-     * Generates a pseudo-random session ID in RFC 4122 (UDID) format
+     * Generates a pseudo-random session ID in RFC 4122 (UDID Version 4) format
      *
      * @returns {string} Pseudo-random session ID
      */
@@ -597,7 +601,7 @@
             }
 
             // when this beacon fired
-            data.when = q.when;
+            data["rt.tstart"] = data["rt.end"] = q.when;
 
             // dimensions
             for (var dimName in q.dimensions) {
@@ -647,7 +651,7 @@
 
             if (sessionID !== false) {
                 params["rt.si"] = sessionID;
-                params["rt.ss"] = Math.round(sessionStart + nowOffset);
+                params["rt.ss"] = sessionStart;
                 params["rt.sl"] = sessionLength;
             }
 
@@ -940,6 +944,9 @@
             // reset session length to 0
             setSessionLength(0);
 
+            // session start
+            setSessionStart(now());
+
             return getSessionID();
         }
 
@@ -971,6 +978,52 @@
          */
         function getSessionLength() {
             return sessionLength;
+        }
+
+        /**
+         * Sets the session start
+         *
+         * @param {number} start Start
+         */
+        function setSessionStart(start) {
+            if (typeof start !== "number" ||
+                start < 0) {
+                return;
+            }
+
+            sessionStart = start;
+        }
+
+        /**
+         * Gets the session start
+         *
+         * @returns {number} Session start
+         */
+        function getSessionStart() {
+            return sessionStart;
+        }
+
+        /**
+         * Transfers a Boomerang Session
+         *
+         * @returns {boolean} True on success
+         */
+        function transferBoomerangSession() {
+            if (window &&
+                window.BOOMR &&
+                window.BOOMR.session &&
+                window.BOOMR.session.ID &&
+                window.BOOMR.session.start &&
+                window.BOOMR.session.length) {
+                // Boomerang is on the page
+                setSessionID(window.BOOMR.session.ID + "-" + Math.round(BOOMR.session.start / 1000).toString(36));
+                setSessionLength(window.BOOMR.session.length);
+                setSessionStart(window.BOOMR.session.start);
+
+                return true;
+            }
+
+            return false;
         }
 
         /**
@@ -1026,6 +1079,9 @@
             incrementSessionLength: incrementSessionLength,
             setSessionLength: setSessionLength,
             getSessionLength: getSessionLength,
+            setSessionStart: setSessionStart,
+            getSessionStart: getSessionStart,
+            transferBoomerangSession: transferBoomerangSession,
             subscribe: subscribe,
 
             // test hooks

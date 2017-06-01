@@ -17,3 +17,8 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
     * console.warn() if you don't specify the REST API Secret Key on `init()`
 * v1.0.2 - July 11, 2016
     * Fix for IE 9 / `XDomainRequest`
+* v1.1.0 - June 1, 2017
+    * Fix for session start time
+    * Set `rt.tstart` and `rt.end` on the beacon instead of `when`
+    * New session start functions: `.setSessionStart()`, `.getSessionStart()`
+    * New function to transfer Boomerang sessions: `.transferBoomerangSession()`
