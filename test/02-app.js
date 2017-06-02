@@ -21,6 +21,9 @@ describe("mPulse app", function() {
         "incrementSessionLength",
         "setSessionLength",
         "getSessionLength",
+        "setSessionStart",
+        "getSessionStart",
+        "transferBoomerangSession",
         "subscribe"
     ];
 

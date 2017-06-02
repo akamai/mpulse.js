@@ -1006,19 +1006,26 @@
         /**
          * Transfers a Boomerang Session
          *
+         * @param {Window} [frame] Root frame
+         *
          * @returns {boolean} True on success
          */
-        function transferBoomerangSession() {
-            if (window &&
-                window.BOOMR &&
-                window.BOOMR.session &&
-                window.BOOMR.session.ID &&
-                window.BOOMR.session.start &&
-                window.BOOMR.session.length) {
+        function transferBoomerangSession(frame) {
+            if (typeof frame === "undefined" &&
+                typeof window !== "undefined") {
+                frame = window;
+            }
+
+            if (typeof frame !== "undefined" &&
+                frame.BOOMR &&
+                frame.BOOMR.session &&
+                frame.BOOMR.session.ID &&
+                frame.BOOMR.session.start &&
+                frame.BOOMR.session.length) {
                 // Boomerang is on the page
-                setSessionID(window.BOOMR.session.ID + "-" + Math.round(BOOMR.session.start / 1000).toString(36));
-                setSessionLength(window.BOOMR.session.length);
-                setSessionStart(window.BOOMR.session.start);
+                setSessionID(frame.BOOMR.session.ID + "-" + Math.round(frame.BOOMR.session.start / 1000).toString(36));
+                setSessionLength(frame.BOOMR.session.length);
+                setSessionStart(frame.BOOMR.session.start);
 
                 return true;
             }
@@ -1223,7 +1230,8 @@
         noConflict: noConflict,
         init: init,
         getApp: getApp,
-        stop: stop
+        stop: stop,
+        now: now
     };
 
     // add a placeholder function for all public app functions until the
