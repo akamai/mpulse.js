@@ -87,6 +87,43 @@ describe("mPulse app - Timers", function() {
             assert.closeTo(deltaMs, 0, 100);
         });
 
+        it("Should set rt.tstart on the beacon", function(done) {
+            var now = +(new Date());
+
+            app.subscribe("beacon", function(data) {
+                assert.operator(data["rt.tstart"], ">=", now);
+
+                // give the beacon 5 seconds to send
+                assert.operator(data["rt.tstart"], "<=", now + 5000);
+                done();
+            });
+
+            app.sendTimer("timer", 10);
+        });
+
+        it("Should set rt.end on the beacon", function(done) {
+            var now = +(new Date());
+
+            app.subscribe("beacon", function(data) {
+                assert.operator(data["rt.end"], ">=", now);
+
+                // give the beacon 5 seconds to send
+                assert.operator(data["rt.end"], "<=", now + 5000);
+                done();
+            });
+
+            app.sendTimer("timer", 10);
+        });
+
+        it("Should set rt.end=rt.tstart on the beacon", function(done) {
+            app.subscribe("beacon", function(data) {
+                assert.equal(data["rt.end"], data["rt.tstart"]);
+                done();
+            });
+
+            app.sendTimer("timer", 10);
+        });
+
         it("Should not send a beacon if the timer is not defined", function(done) {
             app.subscribe("beacon", function() {
                 assert.fail("Should not have fired a beacon");

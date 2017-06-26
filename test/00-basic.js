@@ -21,6 +21,9 @@ describe("mPulse exports", function() {
         "incrementSessionLength",
         "setSessionLength",
         "getSessionLength",
+        "setSessionStart",
+        "getSessionStart",
+        "transferBoomerangSession",
         "subscribe"
     ];
 

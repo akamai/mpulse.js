@@ -1070,6 +1070,9 @@ code.google.com/p/crypto-js/wiki/License
         "incrementSessionLength",
         "setSessionLength",
         "getSessionLength",
+        "setSessionStart",
+        "getSessionStart",
+        "transferBoomerangSession",
         "subscribe"
     ];
 
@@ -1213,15 +1216,16 @@ code.google.com/p/crypto-js/wiki/License
         }
     }
 
-    if (!now) {
-        // NavigationTiming support for a more accurate offset
-        if (typeof window !== "undefined" &&
-            window.performance &&
-            window.performance.timing &&
-            window.performance.timing.navigationStart) {
-            nowOffset = window.performance.timing.navigationStart;
-        }
+    // NavigationTiming support for a more accurate offset
+    if (typeof window !== "undefined" &&
+        "performance" in window &&
+        window.performance &&
+        window.performance.timing &&
+        window.performance.timing.navigationStart) {
+        nowOffset = window.performance.timing.navigationStart;
+    }
 
+    if (!now) {
         // No browser support, fall back to Date.now
         if (typeof Date !== "undefined" && Date.now) {
             now = function() {
@@ -1247,7 +1251,7 @@ code.google.com/p/crypto-js/wiki/License
     }
 
     /**
-     * Generates a pseudo-random session ID in RFC 4122 (UDID) format
+     * Generates a pseudo-random session ID in RFC 4122 (UDID Version 4) format
      *
      * @returns {string} Pseudo-random session ID
      */
@@ -1271,6 +1275,7 @@ code.google.com/p/crypto-js/wiki/License
     function signConfig(apiKey, secretKey, t) {
         if (typeof CryptoJS === "undefined" ||
             typeof CryptoJS.HmacSHA256 !== "function") {
+            warn("CryptoJS libraries not found!  mpulse.js will not work.");
             return "";
         }
 
@@ -1627,7 +1632,7 @@ code.google.com/p/crypto-js/wiki/License
             }
 
             // when this beacon fired
-            data.when = q.when;
+            data["rt.tstart"] = data["rt.end"] = q.when;
 
             // dimensions
             for (var dimName in q.dimensions) {
@@ -1677,7 +1682,7 @@ code.google.com/p/crypto-js/wiki/License
 
             if (sessionID !== false) {
                 params["rt.si"] = sessionID;
-                params["rt.ss"] = Math.round(sessionStart + nowOffset);
+                params["rt.ss"] = sessionStart;
                 params["rt.sl"] = sessionLength;
             }
 
@@ -1970,6 +1975,9 @@ code.google.com/p/crypto-js/wiki/License
             // reset session length to 0
             setSessionLength(0);
 
+            // session start
+            setSessionStart(now());
+
             return getSessionID();
         }
 
@@ -2001,6 +2009,59 @@ code.google.com/p/crypto-js/wiki/License
          */
         function getSessionLength() {
             return sessionLength;
+        }
+
+        /**
+         * Sets the session start
+         *
+         * @param {number} start Start
+         */
+        function setSessionStart(start) {
+            if (typeof start !== "number" ||
+                start < 0) {
+                return;
+            }
+
+            sessionStart = start;
+        }
+
+        /**
+         * Gets the session start
+         *
+         * @returns {number} Session start
+         */
+        function getSessionStart() {
+            return sessionStart;
+        }
+
+        /**
+         * Transfers a Boomerang Session
+         *
+         * @param {Window} [frame] Root frame
+         *
+         * @returns {boolean} True on success
+         */
+        function transferBoomerangSession(frame) {
+            if (typeof frame === "undefined" &&
+                typeof window !== "undefined") {
+                frame = window;
+            }
+
+            if (typeof frame !== "undefined" &&
+                frame.BOOMR &&
+                frame.BOOMR.session &&
+                frame.BOOMR.session.ID &&
+                frame.BOOMR.session.start &&
+                frame.BOOMR.session.length) {
+                // Boomerang is on the page
+                setSessionID(frame.BOOMR.session.ID + "-" + Math.round(frame.BOOMR.session.start / 1000).toString(36));
+                setSessionLength(frame.BOOMR.session.length);
+                setSessionStart(frame.BOOMR.session.start);
+
+                return true;
+            }
+
+            return false;
         }
 
         /**
@@ -2056,6 +2117,9 @@ code.google.com/p/crypto-js/wiki/License
             incrementSessionLength: incrementSessionLength,
             setSessionLength: setSessionLength,
             getSessionLength: getSessionLength,
+            setSessionStart: setSessionStart,
+            getSessionStart: getSessionStart,
+            transferBoomerangSession: transferBoomerangSession,
             subscribe: subscribe,
 
             // test hooks
@@ -2197,7 +2261,8 @@ code.google.com/p/crypto-js/wiki/License
         noConflict: noConflict,
         init: init,
         getApp: getApp,
-        stop: stop
+        stop: stop,
+        now: now
     };
 
     // add a placeholder function for all public app functions until the
