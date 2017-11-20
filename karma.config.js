@@ -13,7 +13,7 @@ module.exports = function(config) {
 
         frameworks: ["mocha"],
         reporters: ["progress", "coverage", "tap"],
-        browsers: ["PhantomJS"],
+        browsers: ["ChromeHeadless"],
 
         coverageReporter: {
             type: "html",
@@ -22,6 +22,8 @@ module.exports = function(config) {
 
         tapReporter: {
             outputFile: "test/karma.tap"
-        }
+        },
+
+        concurrency: Infinity
     });
 };

@@ -105,7 +105,7 @@ module.exports = function(grunt) {
                 ]
             },
             console: {
-                browsers: ["PhantomJS"],
+                browsers: ["ChromeHeadless"],
                 frameworks: ["mocha"]
             }
         },
