@@ -110,9 +110,11 @@ describe("mPulse app - A/B buckets", function() {
         });
 
         it("Should not set a A/B bucket if it contains invalid characters", function() {
-            var chars = ["!", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "=",
-                         "<", ",", ">", ".", "/", "?", "{", "}", "[", "]", "|", "\\", ":", ";",
-                         "\"", "'"];
+            var chars = [
+                "!", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "=",
+                "<", ",", ">", ".", "/", "?", "{", "}", "[", "]", "|", "\\", ":", ";",
+                "\"", "'"
+            ];
 
             for (var i = 0; i < chars.length; i++) {
                 assert.equal(app.setABTest("a" + chars[i] + "b"), false);

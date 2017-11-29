@@ -65,7 +65,7 @@ module.exports = function(grunt) {
             },
             build: {
                 options: {
-                    "output-file": "eslint.xml",
+                    "outputFile": "eslint.xml",
                     "format": "jslint-xml",
                     "silent": true
                 },

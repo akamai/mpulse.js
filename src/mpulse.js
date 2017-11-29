@@ -671,8 +671,8 @@
                         + "="
                         + (
                             params[name] === undefined || params[name] === null
-                            ? ""
-                            : encodeURIComponent(params[name])
+                                ? ""
+                                : encodeURIComponent(params[name])
                         )
                     );
                 }
