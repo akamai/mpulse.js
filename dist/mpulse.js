@@ -1030,7 +1030,7 @@ code.google.com/p/crypto-js/wiki/License
 }());
 
 /*
- * SOASTA mPulse JavaScript API
+ * Akamai mPulse JavaScript API
  * http://mpulse.soasta.com/
  * http://docs.soasta.com/mpulse.js/
  */
@@ -1048,7 +1048,7 @@ code.google.com/p/crypto-js/wiki/License
     var PROCESS_QUEUE_WAIT = 5 * 1000;
 
     // Current version
-    var MPULSE_VERSION = "0.0.1";
+    var MPULSE_VERSION = "1.2.0";
 
     // App public function names
     var APP_FUNCTIONS = [
@@ -1129,6 +1129,8 @@ code.google.com/p/crypto-js/wiki/License
                 xhrFn = function() {
                     return new XMLHttpRequest();
                 };
+            } else if (typeof Ti !== "undefined" && Ti.Network && typeof Ti.Network.createHTTPClient === "function") {
+                xhrFn = Ti.Network.createHTTPClient;
             } else if (typeof require === "function") {
                 xhrFn = function() {
                     var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
@@ -1273,15 +1275,20 @@ code.google.com/p/crypto-js/wiki/License
      * @returns {string} HMAC signature
      */
     function signConfig(apiKey, secretKey, t) {
-        if (typeof CryptoJS === "undefined" ||
-            typeof CryptoJS.HmacSHA256 !== "function") {
+        var hmacSha256 = typeof CryptoJS !== "undefined" && CryptoJS.HmacSHA256;
+
+        if (typeof hmacSha256 !== "function" && typeof require === "function") {
+            hmacSha256 = require("crypto-js/hmac-sha256");
+        }
+
+        if (typeof hmacSha256 !== "function") {
             warn("CryptoJS libraries not found!  mpulse.js will not work.");
             return "";
         }
 
         var message = "key=" + apiKey + "&t=" + t;
 
-        return CryptoJS.HmacSHA256(message, secretKey).toString();
+        return hmacSha256(message, secretKey).toString();
     }
 
     //
@@ -1702,8 +1709,8 @@ code.google.com/p/crypto-js/wiki/License
                         + "="
                         + (
                             params[name] === undefined || params[name] === null
-                            ? ""
-                            : encodeURIComponent(params[name])
+                                ? ""
+                                : encodeURIComponent(params[name])
                         )
                     );
                 }

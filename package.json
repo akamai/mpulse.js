@@ -1,20 +1,20 @@
 {
   "name": "mpulse",
-  "description": "SOASTA mPulse JavaScript API",
+  "description": "Akamai mPulse JavaScript API",
   "main": "./src/mpulse",
-  "author": "SOASTA",
-  "version": "1.1.0",
+  "author": "Akamai",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
-    "url": "http://github.com/soasta/mpulse.js.git"
+    "url": "http://github.com/akamai/mpulse.js.git"
   },
   "bugs": {
-    "url": "http://github.com/soasta/mpulse.js/issues"
+    "url": "http://github.com/akamai/mpulse.js/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/soasta/mpulse.js/raw/master/LICENSE.txt"
+      "url": "http://github.com/akamai/mpulse.js/raw/master/LICENSE.txt"
     }
   ],
   "devDependencies": {
@@ -40,6 +40,7 @@
     "mocha": "^4.0.1"
   },
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
     "xmlhttprequest": "^1.8.0"
   }
 }
