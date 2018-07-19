@@ -22,3 +22,5 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
     * Set `rt.tstart` and `rt.end` on the beacon instead of `when`
     * New session start functions: `.setSessionStart()`, `.getSessionStart()`
     * New function to transfer Boomerang sessions: `.transferBoomerangSession()`
+* v1.2.0 - July 19, 2018
+    * Adds support for [Appcelerator Titanium](https://en.wikipedia.org/wiki/Appcelerator_Titanium)

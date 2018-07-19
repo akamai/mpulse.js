@@ -1,14 +1,15 @@
 {
   "name": "mpulse",
-  "version": "1.1.0",
-  "homepage": "https://github.com/soasta/mpulse.js",
+  "version": "1.2.0",
+  "homepage": "https://github.com/akamai/mpulse.js",
   "authors": [
-    "Nic Jansma <njansma@soasta.com>"
+    "Nic Jansma <njansma@akamai.com>"
   ],
-  "description": "SOASTA mPulse JavaScript API",
+  "description": "Akamai mPulse JavaScript API",
   "main": "dist/mpulse.js",
   "keywords": [
     "soasta",
+    "akamai",
     "mpulse"
   ],
   "license": "MIT",
