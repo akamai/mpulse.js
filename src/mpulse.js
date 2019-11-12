@@ -82,10 +82,15 @@
     /**
      * Fetches the specified URL via a XHR.
      *
-     * @param {string} url URL
+     * @param {string|object} urlOpts URL Options or URL
+     * @param {string} urlOpts.url URL
+     * @param {string} urlOpts.ua User-Agent
      * @param {function(data)} [callback] Callback w/ data
      */
-    function fetchUrl(url, callback) {
+    function fetchUrl(urlOpts, callback) {
+        var url = typeof urlOpts === "string" ? urlOpts : urlOpts.url;
+        var ua = urlOpts && urlOpts.ua;
+
         // determine which environment we're using to create the XHR
         if (!xhrFn) {
             if (typeof XDomainRequest === "function" ||
@@ -133,6 +138,11 @@
         }
 
         xhr.open("GET", url, true);
+
+        if (ua) {
+            xhr.setRequestHeader("User-Agent", ua);
+        }
+
         xhr.send();
     }
 
@@ -659,12 +669,20 @@
          * @returns {undefined}
          */
         function sendBeacon(params) {
+            var ua;
+
             if (!initialized) {
                 warn("sendBeacon: Not yet initialized for " + apiKey + ", waiting 1000");
 
                 return setTimeout(function() {
                     sendBeacon(params);
                 }, 1000);
+            }
+
+            // user-agent was specified
+            if (params.ua) {
+                ua = params.ua;
+                delete params.ua;
             }
 
             params["d"] = configJson["site_domain"];
@@ -714,7 +732,10 @@
             fireEvent("beacon", params);
 
             // initiate the XHR
-            fetchUrl(url);
+            fetchUrl({
+                url: url,
+                ua: ua
+            });
         }
 
         //
