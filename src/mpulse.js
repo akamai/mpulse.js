@@ -431,6 +431,9 @@
          */
         function getBeaconUrl() {
             var url = configJson.beacon_url;
+            if (!url) {
+                warn("No URL from config: " + JSON.stringify(configJson));
+            }
 
             return ensureUrlPrefix(url);
         }
@@ -452,6 +455,8 @@
                     }
                 }
             } catch (e) {
+                warn("config.json could not be parsed!");
+
                 initialized = false;
                 return;
             }
@@ -513,6 +518,7 @@
          */
         function fetchConfig() {
             if (configUrl === "") {
+                warn("No config.json URL specified!");
                 return;
             }
 
@@ -576,6 +582,8 @@
             }
 
             if (!initialized) {
+                warn("processQueue: Not yet initialized for " + apiKey + ", waiting " + PROCESS_QUEUE_WAIT);
+
                 // only have a single timer re-triggering processQueue
                 if (!processQueueWaiting || calledFromTimer) {
                     processQueueWaiting = true;
@@ -647,8 +655,18 @@
          * Sends a beacon
          *
          * @param {object} params Parameters array
+         *
+         * @returns {undefined}
          */
         function sendBeacon(params) {
+            if (!initialized) {
+                warn("sendBeacon: Not yet initialized for " + apiKey + ", waiting 1000");
+
+                return setTimeout(function() {
+                    sendBeacon(params);
+                }, 1000);
+            }
+
             params["d"] = configJson["site_domain"];
             params["h.key"] = configJson["h.key"];
             params["h.d"] = configJson["h.d"];
@@ -698,9 +716,6 @@
             // initiate the XHR
             fetchUrl(url);
         }
-
-        // fetch the config
-        fetchConfig();
 
         //
         // Public functions
@@ -1071,6 +1086,9 @@
                 subscribers[eventName][i](payload);
             }
         }
+
+        // fetch the config
+        fetchConfig();
 
         //
         // Exports
