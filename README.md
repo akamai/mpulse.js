@@ -24,3 +24,6 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
     * New function to transfer Boomerang sessions: `.transferBoomerangSession()`
 * v1.2.0 - July 19, 2018
     * Adds support for [Appcelerator Titanium](https://en.wikipedia.org/wiki/Appcelerator_Titanium)
+* v1.3.0 - November 12, 2019
+    * Exports `sendBeacon`
+    * Optionally specify the `User-Agent` for the beacon
