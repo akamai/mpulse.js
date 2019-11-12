@@ -42,7 +42,8 @@
         "setSessionStart",
         "getSessionStart",
         "transferBoomerangSession",
-        "subscribe"
+        "subscribe",
+        "sendBeacon"
     ];
 
     var EVENTS = [
@@ -1097,6 +1098,7 @@
             getSessionStart: getSessionStart,
             transferBoomerangSession: transferBoomerangSession,
             subscribe: subscribe,
+            sendBeacon: sendBeacon,
 
             // test hooks
             parseConfig: parseConfig
