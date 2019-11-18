@@ -27,3 +27,5 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
 * v1.3.0 - November 12, 2019
     * Exports `sendBeacon`
     * Optionally specify the `User-Agent` for the beacon
+* v1.3.1 - November 18, 2019
+    * Optionally specify the `User-Agent` for the config.json fetch
