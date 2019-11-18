@@ -29,3 +29,5 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
     * Optionally specify the `User-Agent` for the beacon
 * v1.3.1 - November 18, 2019
     * Optionally specify the `User-Agent` for the config.json fetch
+* v1.3.2 - November 18, 2019
+    * Switched `node-XMLHttpRequest` dependency to fix https://github.com/driverdan/node-XMLHttpRequest/pull/128 so `User-Agent` header is set
