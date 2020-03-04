@@ -1048,7 +1048,7 @@ code.google.com/p/crypto-js/wiki/License
     var PROCESS_QUEUE_WAIT = 5 * 1000;
 
     // Current version
-    var MPULSE_VERSION = "1.2.0";
+    var MPULSE_VERSION = "1.3.4";
 
     // App public function names
     var APP_FUNCTIONS = [
@@ -1073,7 +1073,8 @@ code.google.com/p/crypto-js/wiki/License
         "setSessionStart",
         "getSessionStart",
         "transferBoomerangSession",
-        "subscribe"
+        "subscribe",
+        "sendBeacon"
     ];
 
     var EVENTS = [
@@ -1112,10 +1113,15 @@ code.google.com/p/crypto-js/wiki/License
     /**
      * Fetches the specified URL via a XHR.
      *
-     * @param {string} url URL
+     * @param {string|object} urlOpts URL Options or URL
+     * @param {string} urlOpts.url URL
+     * @param {string} urlOpts.ua User-Agent
      * @param {function(data)} [callback] Callback w/ data
      */
-    function fetchUrl(url, callback) {
+    function fetchUrl(urlOpts, callback) {
+        var url = typeof urlOpts === "string" ? urlOpts : urlOpts.url;
+        var ua = urlOpts && urlOpts.ua;
+
         // determine which environment we're using to create the XHR
         if (!xhrFn) {
             if (typeof XDomainRequest === "function" ||
@@ -1163,6 +1169,11 @@ code.google.com/p/crypto-js/wiki/License
         }
 
         xhr.open("GET", url, true);
+
+        if (ua) {
+            xhr.setRequestHeader("User-Agent", ua);
+        }
+
         xhr.send();
     }
 
@@ -1320,6 +1331,9 @@ code.google.com/p/crypto-js/wiki/License
         // configuration URL (default)
         var configUrl = "//c.go-mpulse.net/api/v2/config.json";
 
+        // User-Agent to use for config.json fetch
+        var ua = options.ua || "mpulse.js";
+
         // whether or not to force SSL
         var forceSSL = false;
 
@@ -1461,6 +1475,9 @@ code.google.com/p/crypto-js/wiki/License
          */
         function getBeaconUrl() {
             var url = configJson.beacon_url;
+            if (!url) {
+                warn("No URL from config: " + JSON.stringify(configJson));
+            }
 
             return ensureUrlPrefix(url);
         }
@@ -1482,6 +1499,8 @@ code.google.com/p/crypto-js/wiki/License
                     }
                 }
             } catch (e) {
+                warn("config.json could not be parsed!");
+
                 initialized = false;
                 return;
             }
@@ -1543,6 +1562,7 @@ code.google.com/p/crypto-js/wiki/License
          */
         function fetchConfig() {
             if (configUrl === "") {
+                warn("No config.json URL specified!");
                 return;
             }
 
@@ -1554,7 +1574,10 @@ code.google.com/p/crypto-js/wiki/License
                 url += "&r=";
             }
 
-            fetchUrl(url, parseConfig);
+            fetchUrl({
+                url: url,
+                ua: ua
+            }, parseConfig);
         }
 
         /**
@@ -1606,6 +1629,8 @@ code.google.com/p/crypto-js/wiki/License
             }
 
             if (!initialized) {
+                warn("processQueue: Not yet initialized for " + apiKey + ", waiting " + PROCESS_QUEUE_WAIT);
+
                 // only have a single timer re-triggering processQueue
                 if (!processQueueWaiting || calledFromTimer) {
                     processQueueWaiting = true;
@@ -1677,8 +1702,26 @@ code.google.com/p/crypto-js/wiki/License
          * Sends a beacon
          *
          * @param {object} params Parameters array
+         *
+         * @returns {undefined}
          */
         function sendBeacon(params) {
+            var ua;
+
+            if (!initialized) {
+                warn("sendBeacon: Not yet initialized for " + apiKey + ", waiting 1000");
+
+                return setTimeout(function() {
+                    sendBeacon(params);
+                }, 1000);
+            }
+
+            // user-agent was specified
+            if (params.ua) {
+                ua = params.ua;
+                delete params.ua;
+            }
+
             params["d"] = configJson["site_domain"];
             params["h.key"] = configJson["h.key"];
             params["h.d"] = configJson["h.d"];
@@ -1726,11 +1769,11 @@ code.google.com/p/crypto-js/wiki/License
             fireEvent("beacon", params);
 
             // initiate the XHR
-            fetchUrl(url);
+            fetchUrl({
+                url: url,
+                ua: ua
+            });
         }
-
-        // fetch the config
-        fetchConfig();
 
         //
         // Public functions
@@ -2102,6 +2145,9 @@ code.google.com/p/crypto-js/wiki/License
             }
         }
 
+        // fetch the config
+        fetchConfig();
+
         //
         // Exports
         //
@@ -2128,6 +2174,7 @@ code.google.com/p/crypto-js/wiki/License
             getSessionStart: getSessionStart,
             transferBoomerangSession: transferBoomerangSession,
             subscribe: subscribe,
+            sendBeacon: sendBeacon,
 
             // test hooks
             parseConfig: parseConfig

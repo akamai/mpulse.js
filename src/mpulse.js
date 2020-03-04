@@ -17,7 +17,7 @@
     var PROCESS_QUEUE_WAIT = 5 * 1000;
 
     // Current version
-    var MPULSE_VERSION = "1.3.2";
+    var MPULSE_VERSION = "1.3.4";
 
     // App public function names
     var APP_FUNCTIONS = [
