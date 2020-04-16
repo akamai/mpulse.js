@@ -17,7 +17,7 @@
     var PROCESS_QUEUE_WAIT = 5 * 1000;
 
     // Current version
-    var MPULSE_VERSION = "1.3.4";
+    var MPULSE_VERSION = "1.3.5";
 
     // App public function names
     var APP_FUNCTIONS = [
@@ -43,7 +43,8 @@
         "getSessionStart",
         "transferBoomerangSession",
         "subscribe",
-        "sendBeacon"
+        "sendBeacon",
+        "isInitialized"
     ];
 
     var EVENTS = [
@@ -461,6 +462,9 @@
                 // parse the new JSON data
                 var newConfigJson = JSON.parse(data);
 
+                // clear any previous rate limit
+                delete configJson.rate_limited;
+
                 // merge in updates
                 for (var configkey in newConfigJson) {
                     if (newConfigJson.hasOwnProperty(configkey)) {
@@ -469,6 +473,13 @@
                 }
             } catch (e) {
                 warn("config.json could not be parsed!");
+
+                initialized = false;
+                return;
+            }
+
+            if (!configJson.beacon_url || configJson.rate_limited) {
+                warn("config.json shows rate limiting, no beacons will be sent!");
 
                 initialized = false;
                 return;
@@ -667,6 +678,10 @@
             setImm(processQueue);
         }
 
+        //
+        // Public functions
+        //
+
         /**
          * Sends a beacon
          *
@@ -744,9 +759,14 @@
             });
         }
 
-        //
-        // Public functions
-        //
+        /**
+         * Determines whether the app is initialized or not
+         *
+         * @returns {boolean} True if the app is initialized and can send beacons
+         */
+        function isInitialized() {
+            return initialized;
+        }
 
         /**
          * Starts a timer
@@ -1144,6 +1164,7 @@
             transferBoomerangSession: transferBoomerangSession,
             subscribe: subscribe,
             sendBeacon: sendBeacon,
+            isInitialized: isInitialized,
 
             // test hooks
             parseConfig: parseConfig
