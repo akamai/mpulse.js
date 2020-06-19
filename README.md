@@ -33,3 +33,6 @@ Documentation is available at: [http://docs.soasta.com/mpulse.js](http://docs.so
     * Switched `node-XMLHttpRequest` dependency to fix https://github.com/driverdan/node-XMLHttpRequest/pull/128 so `User-Agent` header is set
 * v1.3.4 - March 4, 2020
     * Updated to `crypto-js@4.0.0`
+* v1.3.5 - April 16, 2020
+    * mpulse.js will pause sending beacons when the app is rate limited
+    * `mPulse.isInitialized()` function added

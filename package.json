@@ -3,7 +3,7 @@
   "description": "Akamai mPulse JavaScript API",
   "main": "./src/mpulse",
   "author": "Akamai",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "repository": {
     "type": "git",
     "url": "http://github.com/akamai/mpulse.js.git"
