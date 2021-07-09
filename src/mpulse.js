@@ -17,7 +17,7 @@
     var PROCESS_QUEUE_WAIT = 5 * 1000;
 
     // Current version
-    var MPULSE_VERSION = "1.3.5";
+    var MPULSE_VERSION = "1.3.6";
 
     // App public function names
     var APP_FUNCTIONS = [
@@ -302,7 +302,7 @@
         var configUrl = "//c.go-mpulse.net/api/v2/config.json";
 
         // User-Agent to use for config.json fetch
-        var ua = options.ua || "mpulse.js";
+        var ua = options.ua;
 
         // whether or not to force SSL
         var forceSSL = false;

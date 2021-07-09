@@ -548,3 +548,5 @@ mPulse.sendTimer("Timer2", 500); // in ms
 * v1.3.5 - April 16, 2020
     * mpulse.js will pause sending beacons when the app is rate limited
     * `mPulse.isInitialized()` function added
+* v1.3.6 - July 9, 2021
+    * `User-Agent` header is no longer set in the browser
