@@ -100,6 +100,9 @@ module.exports = function(grunt) {
                     "lib/mocha/mocha.css",
                     "lib/mocha/mocha.js",
                     "lib/assertive-chai/dist/assertive-chai.js",
+                    "lib/cryptojslib/components/core.js",
+                    "lib/cryptojslib/components/sha256.js",
+                    "lib/cryptojslib/components/hmac.js",
                     "src/mpulse.js",
                     "test/*.js"
                 ]
