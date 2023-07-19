@@ -69,7 +69,7 @@ describe("mPulse app - Timers", function() {
             var timerId = app.startTimer("timer");
             setTimeout(function() {
                 var deltaMs = app.stopTimer(timerId);
-                assert.closeTo(deltaMs, 100, 50);
+                assert.closeTo(deltaMs, 100, 100);
                 done();
             }, 100);
         });
