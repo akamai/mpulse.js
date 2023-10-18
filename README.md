@@ -1,6 +1,6 @@
 # mPulse.js
 
-The mPulse JavaScript API (`mpulse.js`) allows you to send beacons from JavaScript to [Akamai mPulse](https://www.akamai.com/us/en/products/web-performance/mpulse-real-user-monitoring.jsp) via the [mPulse Beacon API](https://developer.akamai.com/api/web_performance/mpulse_beacon/v2.html).
+The mPulse JavaScript API (`mpulse.js`) allows you to send beacons from JavaScript to [Akamai mPulse](https://www.akamai.com/us/en/products/web-performance/mpulse-real-user-monitoring.jsp) via the [mPulse Beacon API](https://techdocs.akamai.com/mpulse/reference/beacons).
 
 ## Quick-Start
 
