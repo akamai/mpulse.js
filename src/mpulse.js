@@ -95,9 +95,21 @@
         fetch(url, {
             method: "GET",
             headers: headers
-        }).then(function(data) {
-            data.text()
-                .then(callback);
+        }).then(function(response) {
+            if (response.ok) {
+                response.text()
+                    .then(callback)
+                    .catch(function(err) {
+                        console.error("Error parsing response text:", err);
+                        callback(null); // Pass null to indicate failure
+                    });
+            } else {
+                console.error("Fetch failed with status:", response.status);
+                callback(null); // Pass null to indicate failure
+            }
+        }).catch(function(err) {
+            console.error("Fetch request failed:", err);
+            callback(null); // Pass null to indicate failure
         });
     }
 
