@@ -552,3 +552,5 @@ mPulse.sendTimer("Timer2", 500); // in ms
   * `User-Agent` header is no longer set in the browser
 * v1.3.7 - August 23, 2024
   * `crypto-js` NPM package updated
+* v1.3.8 - July 29, 2025
+  * Use Fetch API instead of `node-XMLHttpRequest`

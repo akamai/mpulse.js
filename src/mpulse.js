@@ -17,7 +17,7 @@
     var PROCESS_QUEUE_WAIT = 5 * 1000;
 
     // Current version
-    var MPULSE_VERSION = "1.3.7";
+    var MPULSE_VERSION = "1.3.8";
 
     // App public function names
     var APP_FUNCTIONS = [
@@ -44,7 +44,8 @@
         "transferBoomerangSession",
         "subscribe",
         "sendBeacon",
-        "isInitialized"
+        "isInitialized",
+        "getConfig"
     ];
 
     var EVENTS = [
@@ -56,12 +57,6 @@
     // Members
     //
     var i = 0;
-
-    // XHR function to use
-    var xhrFn;
-
-    // For the XHR function, to use onload vs onreadystatechange
-    var xhrFnOnload = false;
 
     // now() implementation
     var now = false;
@@ -81,7 +76,7 @@
     //
 
     /**
-     * Fetches the specified URL via a XHR.
+     * Fetches the specified URL.
      *
      * @param {string|object} urlOpts URL Options or URL
      * @param {string} urlOpts.url URL
@@ -91,60 +86,19 @@
     function fetchUrl(urlOpts, callback) {
         var url = typeof urlOpts === "string" ? urlOpts : urlOpts.url;
         var ua = urlOpts && urlOpts.ua;
-
-        // determine which environment we're using to create the XHR
-        if (!xhrFn) {
-            if (typeof XDomainRequest === "function" ||
-                typeof XDomainRequest === "object") {
-                xhrFnOnload = true;
-                xhrFn = function() {
-                    return new XDomainRequest();
-                };
-            } else if (typeof XMLHttpRequest === "function" ||
-                typeof XMLHttpRequest === "object") {
-                xhrFn = function() {
-                    return new XMLHttpRequest();
-                };
-            } else if (typeof Ti !== "undefined" && Ti.Network && typeof Ti.Network.createHTTPClient === "function") {
-                xhrFn = Ti.Network.createHTTPClient;
-            } else if (typeof require === "function") {
-                xhrFn = function() {
-                    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-                    return new XMLHttpRequest();
-                };
-            } else if (window && typeof window.ActiveXObject !== "undefined") {
-                xhrFn = function() {
-                    return new window.ActiveXObject("Microsoft.XMLHTTP");
-                };
-            }
-        }
-
-        // create an XHR object to work with
-        var xhr = xhrFn();
-
-        // listen for state changes
-        if (typeof callback === "function") {
-            if (xhrFnOnload) {
-                xhr.onload = function() {
-                    callback(xhr.responseText);
-                };
-            } else {
-                xhr.onreadystatechange = function() {
-                    // response is ready
-                    if (xhr.readyState === 4) {
-                        callback(xhr.responseText);
-                    }
-                };
-            }
-        }
-
-        xhr.open("GET", url, true);
+        var headers = new Headers();
 
         if (ua) {
-            xhr.setRequestHeader("User-Agent", ua);
+            headers.append("User-Agent", ua);
         }
 
-        xhr.send();
+        fetch(url, {
+            method: "GET",
+            headers: headers
+        }).then(function(data) {
+            data.text()
+                .then(callback);
+        });
     }
 
     //
@@ -439,6 +393,15 @@
         }
 
         /**
+         * Gets the mPulse config.json
+         *
+         * @returns {object} Configuration
+         */
+        function getConfig() {
+            return configJson;
+        }
+
+        /**
          * Gets the beacon URL
          *
          * @returns {string} Beacon URL
@@ -455,7 +418,7 @@
         /**
          * Parses config.json data
          *
-         * @param {string} data XHR data
+         * @param {string} data Config.json data
          */
         function parseConfig(data) {
             try {
@@ -752,7 +715,7 @@
             // notify listeners
             fireEvent("beacon", params);
 
-            // initiate the XHR
+            // initiate the fetch
             fetchUrl({
                 url: url,
                 ua: ua
@@ -1165,6 +1128,7 @@
             subscribe: subscribe,
             sendBeacon: sendBeacon,
             isInitialized: isInitialized,
+            getConfig: getConfig,
 
             // test hooks
             parseConfig: parseConfig
